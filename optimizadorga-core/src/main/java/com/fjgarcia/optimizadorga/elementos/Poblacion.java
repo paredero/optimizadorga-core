@@ -12,11 +12,11 @@ import com.fjgarcia.optimizadorga.algoritmo.comparadores.ComparadorMejorCoste;
  *
  */
 public class Poblacion {	
-	private List<Cromosoma> cromosomas;
+	private List<Chromosome> cromosomas;
 	private int tamanio;
-	private Funcion funcionCoste;
+	private FitnessFunction funcionCoste;
 
-	private Cromosoma mejorCromosoma;
+	private Chromosome mejorCromosoma;
 	
 	/**
 	 * @param configuracion
@@ -29,8 +29,8 @@ public class Poblacion {
 		
 		for (int i = 0; i < configuracion.getTamanioPoblacion(); i++) {
 			poblacion.getCromosomas().add(
-					Cromosoma.generarCromosomaAleatorio(configuracion
-							.getParametros()));			
+					Chromosome.generateRandomChromosome(configuracion
+							.getParametros().values()));			
 		}
 		poblacion.setFuncionCoste(configuracion.getFuncionCoste());
 		poblacion.calcularCostesPoblacion();
@@ -40,13 +40,13 @@ public class Poblacion {
 	
 	public Poblacion() {
 		super();
-		this.cromosomas = new ArrayList<Cromosoma>();
+		this.cromosomas = new ArrayList<Chromosome>();
 	}
 
 	/**
 	 * @return the cromosomas
 	 */
-	public List<Cromosoma> getCromosomas() {
+	public List<Chromosome> getCromosomas() {
 		return cromosomas;
 	}
 
@@ -54,7 +54,7 @@ public class Poblacion {
 	 * @param cromosomas
 	 *            the cromosomas to set
 	 */
-	public void setCromosomas(List<Cromosoma> cromosomas) {
+	public void setCromosomas(List<Chromosome> cromosomas) {
 		this.cromosomas = cromosomas;
 	}
 
@@ -84,14 +84,14 @@ public class Poblacion {
 				+ cromosomas + "]";
 	}
 
-	public void setFuncionCoste(Funcion expresion) {
+	public void setFuncionCoste(FitnessFunction expresion) {
 		this.funcionCoste = expresion;
 	}
 
 	/**
 	 * @return the funcionCoste
 	 */
-	public Funcion getFuncionCoste() {
+	public FitnessFunction getFuncionCoste() {
 		return funcionCoste;
 	}
 
@@ -101,8 +101,8 @@ public class Poblacion {
 	 */
 	public void calcularCostesPoblacion() throws Exception {
 //		log.debug("***********calcula costes de la poblacion " + this.hashCode());
-		for (Cromosoma individuo : this.getCromosomas()) {
-			individuo.calcularCoste(this.funcionCoste);
+		for (Chromosome individuo : this.getCromosomas()) {
+			individuo.calculateFitness(this.funcionCoste);
 		}
 //		log.debug("***********Fin del calculo costes de la poblacion " + this);
 	}
@@ -110,7 +110,7 @@ public class Poblacion {
 	/**
 	 * @return el mejor individuo de la poblaci�n
 	 */
-	public Cromosoma obtenerMejor() {
+	public Chromosome obtenerMejor() {
 		mejorCromosoma = Collections
 				.max(cromosomas, new ComparadorMejorCoste());
 
@@ -120,8 +120,8 @@ public class Poblacion {
 	/**
 	 * @return el peor individuo de la poblacion
 	 */
-	public Cromosoma obtenerPeor() {
-		Cromosoma peorCromosoma = Collections.min(cromosomas,
+	public Chromosome obtenerPeor() {
+		Chromosome peorCromosoma = Collections.min(cromosomas,
 				new ComparadorMejorCoste());
 		return peorCromosoma;
 	}
@@ -143,9 +143,9 @@ public class Poblacion {
 		Poblacion copia = new Poblacion();
 		copia.setFuncionCoste(origen.getFuncionCoste());
 		copia.setTamanio(origen.getTamanio());
-		List<Cromosoma> listaCromosomas = new ArrayList<Cromosoma>();
-		for (Cromosoma c:origen.getCromosomas()) {
-			Cromosoma nuevo = new Cromosoma(c);
+		List<Chromosome> listaCromosomas = new ArrayList<Chromosome>();
+		for (Chromosome c:origen.getCromosomas()) {
+			Chromosome nuevo = new Chromosome(c);
 			listaCromosomas.add(nuevo);
 		}
 		copia.setCromosomas(listaCromosomas);
@@ -157,8 +157,8 @@ public class Poblacion {
 	 */
 	public double calcularMediaCoste() {
 		double sumaCostes = 0.0;
-		for(Cromosoma c: this.cromosomas) {
-			sumaCostes+=c.getCoste();
+		for(Chromosome c: this.cromosomas) {
+			sumaCostes+=c.getFitness();
 		}
 		return sumaCostes/this.tamanio;
 	}
@@ -166,8 +166,8 @@ public class Poblacion {
 	public double calcularDesviacionTipica() {
 		double media = this.calcularMediaCoste();
 		double cuadradosAcumulados = 0;
-		for(Cromosoma c: this.cromosomas) {
-			double diferencia = c.getCoste() - media;
+		for(Chromosome c: this.cromosomas) {
+			double diferencia = c.getFitness() - media;
 			cuadradosAcumulados += (diferencia*diferencia);
 		}
 		return Math.sqrt(cuadradosAcumulados/this.tamanio);
@@ -179,9 +179,9 @@ public class Poblacion {
 	 * @param antiguo
 	 * @param nuevo
 	 */
-	public void sustituirCromosoma(Cromosoma antiguo,
-			Cromosoma nuevo) {
-		Collections.replaceAll(this.getCromosomas(), antiguo, new Cromosoma(nuevo));
+	public void sustituirCromosoma(Chromosome antiguo,
+			Chromosome nuevo) {
+		Collections.replaceAll(this.getCromosomas(), antiguo, new Chromosome(nuevo));
 		mejorCromosoma = null;
 	}
 

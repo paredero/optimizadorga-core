@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import com.fjgarcia.optimizadorga.elementos.Configuracion;
-import com.fjgarcia.optimizadorga.elementos.Cromosoma;
-import com.fjgarcia.optimizadorga.elementos.Gen;
+import com.fjgarcia.optimizadorga.elementos.Chromosome;
+import com.fjgarcia.optimizadorga.elementos.Gene;
 import com.fjgarcia.optimizadorga.elementos.Poblacion;
 
 /**
@@ -78,18 +78,18 @@ public class Generacion {
 	 * @param nuevaPoblacion
 	 */
 	private void operadorCruce(Poblacion poblacion) {
-		List<Cromosoma> cromosomasSeleccionados = new ArrayList<Cromosoma>();
-		for (Cromosoma c:poblacion.getCromosomas()) {
+		List<Chromosome> cromosomasSeleccionados = new ArrayList<Chromosome>();
+		for (Chromosome c:poblacion.getCromosomas()) {
 			double random = Math.random();
 			if (random < configuracion.getProbabilidadCruce()) {
 				cromosomasSeleccionados.add(c);
 			}
 		}
 		int i = 0;
-		Iterator<Cromosoma> itCromosomas = cromosomasSeleccionados.iterator();
-		Cromosoma cPar = null;
+		Iterator<Chromosome> itCromosomas = cromosomasSeleccionados.iterator();
+		Chromosome cPar = null;
 		while (itCromosomas.hasNext()) {
-			Cromosoma cImpar = itCromosomas.next();
+			Chromosome cImpar = itCromosomas.next();
 			if (i%2==0) {
 //				Si es par
 				cPar = cImpar;
@@ -109,15 +109,15 @@ public class Generacion {
 	 * @param nuevaPoblacion
 	 */
 	
-	private void cruzar(Cromosoma cPar, Cromosoma cImpar) {
+	private void cruzar(Chromosome cPar, Chromosome cImpar) {
 		Random random = new Random();
 		int max = cPar.getGenes().size();
 		int posCruce = random.nextInt(max);
 		int i = posCruce;
 		
 		while (i < max) {
-			Gen genPar = cPar.getGenes().get(i);
-			Gen genImpar = cImpar.getGenes().get(i); 
+			Gene genPar = cPar.getGenes().get(i);
+			Gene genImpar = cImpar.getGenes().get(i); 
 			Collections.replaceAll(cPar.getGenes(), genPar, genImpar);
 			Collections.replaceAll(cImpar.getGenes(), genImpar, genPar);
 			i++;
@@ -130,14 +130,14 @@ public class Generacion {
 	 * @throws Exception 
 	 */	
 	private void operadorMutacion(Poblacion poblacion) throws Exception {
-		for (Cromosoma c:poblacion.getCromosomas()) {
-			for (Gen g:c.getGenes()) {
+		for (Chromosome c:poblacion.getCromosomas()) {
+			for (Gene g:c.getGenes()) {
 				double random = Math.random();
 				if (random < configuracion.getProbabilidadMutacion()) {
-					g.generarValorAleatorio();
+					g.generateRandomValue();
 				}
 			}
-			c.calcularCoste(configuracion.getFuncionCoste());
+			c.calculateFitness(configuracion.getFuncionCoste());
 		}
 	}
 
@@ -145,10 +145,10 @@ public class Generacion {
 	 * @param nuevaPoblacion
 	 */
 	private void operadorElitismo(Poblacion nuevaPoblacion) {
-		Cromosoma nuevoMejor = nuevaPoblacion.obtenerMejor();		
-		Cromosoma mejorPoblacionInicial = poblacionInicial.obtenerMejor();
-		if (nuevoMejor.getCoste() < mejorPoblacionInicial.getCoste()) {
-			Cromosoma peor = nuevaPoblacion.obtenerPeor();
+		Chromosome nuevoMejor = nuevaPoblacion.obtenerMejor();		
+		Chromosome mejorPoblacionInicial = poblacionInicial.obtenerMejor();
+		if (nuevoMejor.getFitness() < mejorPoblacionInicial.getFitness()) {
+			Chromosome peor = nuevaPoblacion.obtenerPeor();
 			nuevaPoblacion.sustituirCromosoma(peor, mejorPoblacionInicial);
 		}
 	}

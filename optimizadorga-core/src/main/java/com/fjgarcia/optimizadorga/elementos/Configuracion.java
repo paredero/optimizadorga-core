@@ -15,8 +15,8 @@ public class Configuracion {
 	private static Configuracion instancia = new Configuracion();
 	private int maxEras;
 	private int maxGens;
-	private Funcion funcionCoste;
-	private Map<String, TipoGen> parametros;
+	private FitnessFunction funcionCoste;
+	private Map<String, GeneType> parametros;
 	private int tamanioPoblacion;
 	private double probabilidadCruce;
 	private double probabilidadMutacion;
@@ -28,7 +28,7 @@ public class Configuracion {
 	}
 	
 	
-	public Map<String, TipoGen> getParametros() {
+	public Map<String, GeneType> getParametros() {
 		return this.parametros;
 	}
 
@@ -36,7 +36,7 @@ public class Configuracion {
 		return this.tamanioPoblacion;
 	}
 
-	public Funcion getFuncionCoste() {
+	public FitnessFunction getFuncionCoste() {
 		return this.funcionCoste;
 	}
 
@@ -70,7 +70,7 @@ public class Configuracion {
 
 
 	public static Configuracion crearConfiguracion(Integer maxEras,
-			Integer maxGens, Funcion funcionCoste, Map<String, TipoGen> parametros,
+			Integer maxGens, FitnessFunction funcionCoste, Map<String, GeneType> parametros,
 			Integer tamanioPoblacion, Double probabilidadCruce, Double probabilidadMutacion, boolean usarElitismo, boolean selectorRuleta, boolean selectorTorneo) {
 		instancia.maxEras = maxEras;
 		instancia.maxGens = maxGens;

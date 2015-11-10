@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.fjgarcia.optimizadorga.elementos.Cromosoma;
+import com.fjgarcia.optimizadorga.elementos.Chromosome;
 import com.fjgarcia.optimizadorga.elementos.Poblacion;
 
 /**
@@ -24,14 +24,14 @@ public class SelectorTorneo implements Selector {
 		// 1 Inicialmente crea una poblacion vacia con la misma configuraci�n
 		// sobre la que se devuelven los nuevos elementos
 		Poblacion poblacionSeleccionados = Poblacion.copiarPoblacionVacia(poblacionInicial);
-		List<Cromosoma> cromosomasSeleccionados = new ArrayList<Cromosoma>();
+		List<Chromosome> cromosomasSeleccionados = new ArrayList<Chromosome>();
 		
 		Poblacion poblacionMuestra = Poblacion.copiarPoblacionVacia(poblacionInicial);
 		poblacionMuestra.setTamanio(numElemSeleccionados);
 		
 		// Genera grupos aleatorios y toma el mejor de cada grupo para la nueva poblacion
 		while (cromosomasSeleccionados.size()<poblacionSeleccionados.getTamanio()) {
-			List<Cromosoma> muestra = this.seleccionarAlAzar(poblacionInicial, numElemSeleccionados);
+			List<Chromosome> muestra = this.seleccionarAlAzar(poblacionInicial, numElemSeleccionados);
 			poblacionMuestra.setCromosomas(muestra);
 			cromosomasSeleccionados.add(poblacionMuestra.obtenerMejor());
 		}
@@ -48,9 +48,9 @@ public class SelectorTorneo implements Selector {
 	 * @param numeroElementos
 	 * @return
 	 */
-	private List<Cromosoma> seleccionarAlAzar(Poblacion poblacionInicial,
+	private List<Chromosome> seleccionarAlAzar(Poblacion poblacionInicial,
 			int numeroElementos) {
-		List<Cromosoma> listaCromosomas = new ArrayList<Cromosoma>();
+		List<Chromosome> listaCromosomas = new ArrayList<Chromosome>();
 		while (listaCromosomas.size() < numeroElementos) {
 			int posicion = random.nextInt(poblacionInicial.getTamanio());
 			listaCromosomas.add(poblacionInicial.getCromosomas().get(posicion));

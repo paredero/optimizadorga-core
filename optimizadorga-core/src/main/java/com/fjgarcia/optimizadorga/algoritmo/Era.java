@@ -6,7 +6,7 @@ import java.util.List;
 import com.fjgarcia.optimizadorga.algoritmo.interfaces.EraObserver;
 import com.fjgarcia.optimizadorga.algoritmo.interfaces.EraSubject;
 import com.fjgarcia.optimizadorga.elementos.Configuracion;
-import com.fjgarcia.optimizadorga.elementos.Cromosoma;
+import com.fjgarcia.optimizadorga.elementos.Chromosome;
 import com.fjgarcia.optimizadorga.elementos.Poblacion;
 
 /**
@@ -22,7 +22,7 @@ public class Era implements EraSubject {
 	// Aqu� conservo las sucesivas poblaciones resultado de la evolucion 
 	// en la computacion
 	private List<Poblacion> evolucionPoblaciones;
-	private Cromosoma mejorIndividuo;
+	private Chromosome mejorIndividuo;
 	
 
 	
@@ -75,7 +75,7 @@ public class Era implements EraSubject {
 	/**
 	 * @return  El mejor cromosoma obtenido en la computaci�n hasta el momento
 	 */
-	public Cromosoma obtenerMejor() {
+	public Chromosome obtenerMejor() {
 		mejorIndividuo = this.evolucionPoblaciones.get(
 				this.evolucionPoblaciones.size() - 1).obtenerMejor();
 		return mejorIndividuo;

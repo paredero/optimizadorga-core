@@ -17,13 +17,13 @@ import net.objecthunter.exp4j.ValidationResult;
  * @author Francisco Javier Garc�a Paredero
  *
  */
-public class Funcion {
+public class FitnessFunction {
 	private static final String VARIABLE_NO_ASIGNADA1 = "The setVariable ";
 	private static final String VARIABLE_NO_ASIGNADA2 = "has not been set";
 //	private String expresion;
 	private Expression expresion;
 	private String strExpr;
-	public Funcion(String strExpr, Map<String, TipoGen> parametros) throws Exception {
+	public FitnessFunction(String strExpr, Map<String, GeneType> parametros) throws Exception {
 		super();
 		this.validarExpresion(strExpr);
 		this.strExpr = strExpr;
@@ -88,9 +88,9 @@ public class Funcion {
  * @return el valor de la funci�n ejecutada con los parametros pasados
  * @throws Exception
  */
-	public double evaluate(List<Gen> listaParametros) throws Exception{		
-		for (Gen parametro:listaParametros) {
-			expresion.setVariable(parametro.getTipoGen().getNombre().toLowerCase(), parametro.getValor());
+	public double evaluate(List<Gene> listaParametros) throws Exception{		
+		for (Gene parametro:listaParametros) {
+			expresion.setVariable(parametro.getGeneType().getName().toLowerCase(), parametro.getValue());
 		}
 		return expresion.evaluate();
 	}

@@ -4,7 +4,7 @@
 package com.fjgarcia.optimizadorga.algoritmo.selectores;
 
 
-import com.fjgarcia.optimizadorga.elementos.Cromosoma;
+import com.fjgarcia.optimizadorga.elementos.Chromosome;
 import com.fjgarcia.optimizadorga.elementos.Poblacion;
 /** 
  * Implementaci�n de un operador de selecci�n basado en el m�todo de
@@ -28,8 +28,8 @@ public class SelectorRuleta implements Selector {
 		// 1.- Calcula la suma total de los valores de la funcion de coste para
 		// todos los cromosomas de la poblaci�n
 		double sumaCoste = 0;
-		for (Cromosoma c : poblacionInicial.getCromosomas()) {
-			sumaCoste += c.getCoste() + offset;
+		for (Chromosome c : poblacionInicial.getCromosomas()) {
+			sumaCoste += c.getFitness() + offset;
 		}
 
 		// 2. Calcula la probabilidad de selecci�n para cada cromosoma
@@ -38,8 +38,8 @@ public class SelectorRuleta implements Selector {
 				.getTamanio()];
 		double sumaProbabilidades = 0;
 		int i = 0;
-		for (Cromosoma c : poblacionInicial.getCromosomas()) {
-			double probabilidadElemento = (c.getCoste()+offset) / sumaCoste;
+		for (Chromosome c : poblacionInicial.getCromosomas()) {
+			double probabilidadElemento = (c.getFitness()+offset) / sumaCoste;
 			sumaProbabilidades += probabilidadElemento;
 			probabilidadesAcumuladas[i] = sumaProbabilidades;
 			i++;
@@ -60,7 +60,7 @@ public class SelectorRuleta implements Selector {
 	 */
 	private double calcularOffset(Poblacion poblacionInicial) {
 		double offset = 0;
-		double minimo = poblacionInicial.obtenerPeor().getCoste();
+		double minimo = poblacionInicial.obtenerPeor().getFitness();
 		if (minimo<0) {
 			offset = (-1 * minimo);
 		}
@@ -81,7 +81,7 @@ public class SelectorRuleta implements Selector {
 		double numAleatorio = Math.random();
 		// 4b. Selecciona el cromosoma en base al numero aleatorio
 		if (numAleatorio < probabilidadesAcumuladas[0]) {
-			poblacionSeleccionados.getCromosomas().add(new Cromosoma(
+			poblacionSeleccionados.getCromosomas().add(new Chromosome(
 					poblacion.getCromosomas().get(0)));
 		} else {
 			int k = 1;
@@ -95,7 +95,7 @@ public class SelectorRuleta implements Selector {
 						k++;
 					}
 				}
-				poblacionSeleccionados.getCromosomas().add(new Cromosoma(
+				poblacionSeleccionados.getCromosomas().add(new Chromosome(
 						poblacion.getCromosomas().get(k)));
 			} catch (RuntimeException e) {
 				e.printStackTrace();
