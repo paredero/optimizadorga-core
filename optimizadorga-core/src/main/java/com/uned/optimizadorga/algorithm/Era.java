@@ -3,11 +3,11 @@ package com.uned.optimizadorga.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.uned.optimizadorga.algoritmo.interfaces.EraObserver;
-import com.uned.optimizadorga.algoritmo.interfaces.EraSubject;
-import com.uned.optimizadorga.elementos.Configuration;
-import com.uned.optimizadorga.elementos.Chromosome;
-import com.uned.optimizadorga.elementos.Population;
+import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
+import com.uned.optimizadorga.algorithm.observerinterfaces.EraSubject;
+import com.uned.optimizadorga.model.Chromosome;
+import com.uned.optimizadorga.model.Configuration;
+import com.uned.optimizadorga.model.Population;
 
 /**
  * This class manages the execution of an era It implements the EraSubject
@@ -24,7 +24,7 @@ public class Era implements EraSubject {
 	// Keeps the population generated as a result of the evolution in the
 	// computation
 	private List<Population> evolvedPopulations;
-	private Chromosome fittestIndividual;
+	private Chromosome bestIndividual;
 	
 
 	
@@ -76,12 +76,12 @@ public class Era implements EraSubject {
 	}
 
 	/**
-	 * @return The fittest chromosome currently obtained
+	 * @return The best chromosome currently obtained
 	 */
-	public Chromosome obtainFittest() {
-		fittestIndividual = this.evolvedPopulations.get(
-				this.evolvedPopulations.size() - 1).obtainFittest();
-		return fittestIndividual;
+	public Chromosome obtainBest() {
+		bestIndividual = this.evolvedPopulations.get(
+				this.evolvedPopulations.size() - 1).obtainBest();
+		return bestIndividual;
 	}
 
 	/*

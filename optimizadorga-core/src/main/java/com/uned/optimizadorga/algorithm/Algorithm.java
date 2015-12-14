@@ -3,10 +3,10 @@ package com.uned.optimizadorga.algorithm;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.uned.optimizadorga.algoritmo.interfaces.AlgorithmObserver;
-import com.uned.optimizadorga.algoritmo.interfaces.AlgorithmSubject;
-import com.uned.optimizadorga.algoritmo.interfaces.EraObserver;
-import com.uned.optimizadorga.elementos.Configuration;
+import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmObserver;
+import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmSubject;
+import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
+import com.uned.optimizadorga.model.Configuration;
 /**
  * Implementation of the evolutionary algorithm
  * It implements several interfaces
@@ -83,7 +83,7 @@ public class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
 	@Override
 	public void notifyEndEraExecution(Era processedEra) {
 		for (AlgorithmObserver o:this.observers) {
-			o.updateFinCalculoEra(processedEra);
+			o.updateEndEraExecution(processedEra);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
 		// When it finishes it sends all the eras, which already contains all the
 		// processed generations
 		for (AlgorithmObserver o:this.observers) {
-			o.updateFin();
+			o.updateEnd();
 		}
 	}
 	

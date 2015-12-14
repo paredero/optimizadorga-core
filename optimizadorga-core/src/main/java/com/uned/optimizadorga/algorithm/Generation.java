@@ -6,36 +6,42 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import com.uned.optimizadorga.elementos.Configuration;
-import com.uned.optimizadorga.elementos.Chromosome;
-import com.uned.optimizadorga.elementos.Gen;
-import com.uned.optimizadorga.elementos.Population;
+import com.uned.optimizadorga.model.Chromosome;
+import com.uned.optimizadorga.model.Configuration;
+import com.uned.optimizadorga.model.Gene;
+import com.uned.optimizadorga.model.Population;
 
 /**
- * Clase encargada de la evoluci�n de una generaci�n
- * @author Francisco Javier Garc�a Paredero
+ * Class in charge of the evolution of a generation
+ * @author Francisco Javier Garcia Paredero
  *
  */
 public class Generation {
-	private Population poblacionInicial;
-	private Population nuevaPoblacion;
-	private Configuration configuracion;
+	private Population initialPopulation;
+	private Population newPopulation;
+	private Configuration configuration;
 
-	public Generation(Population poblacion, Configuration configuracion) {
-		this.poblacionInicial = poblacion;
-		this.configuracion = configuracion;
+	/**
+	 * Constructor
+	 * @param initialPopulation The starting population
+	 * @param configuration The configuration data of the execution
+	 */
+	public Generation(Population initialPopulation, Configuration configuration) {
+		this.initialPopulation = initialPopulation;
+		this.configuration = configuration;
 	}
 
 	/**
-	 * Ejecuci�n de la evoluci�n de una generaci�n
+	 * Executes the evolution of a generation
 	 * @throws Exception
 	 */
 	public void execute() throws Exception {
-		nuevaPoblacion = this.seleccionar();
-		operadorCruce(nuevaPoblacion);
-		operadorMutacion(nuevaPoblacion);
-		if (this.configuracion.getElitismo()) {
-			operadorElitismo(nuevaPoblacion);
+		newPopulation = this.select();
+		this.crossover(newPopulation);
+		this.mutation(newPopulation);
+		// If elitism is configured, then the operator is executed
+		if (this.configuration.getElitism()) {
+			this.elitism(newPopulation);
 		}
 		
 	}
@@ -43,113 +49,125 @@ public class Generation {
 	
 	
 	/**
-	 * @return La nueva poblaci�n surgida tras un paso evolutivo
+	 * @return The new population generated after one evolutionary step
 	 */
 	public Population getEvolvedPopulation() {
-		return this.nuevaPoblacion;
+		return this.newPopulation;
 	}
 
 	
 	/**
-	 * @return the poblacionInical
+	 * @return the initialPopulation
 	 */
-	public Population getPoblacionInicial() {
-		return poblacionInicial;
+	public Population getInitialPopulation() {
+		return initialPopulation;
 	}
 
 	/**
-	 * @return the configuracion
+	 * Given an initial population it uses the configured selector to generate a
+	 * new population
+	 * @return a new population after applying the selector
 	 */
-	public Configuration getConfiguracion() {
-		return configuracion;
+	private Population select() {
+		Population result = configuration.getSelector().select(initialPopulation);
+		result = Population.copyPopulation(result);
+		return result;
 	}
 
 	/**
-	 * Dada una poblacion inicial, genera una nueva poblacion aplicando el selector
-	 * @return la nueva poblacion aplicando el selector
+	 * Applies the crossover operator on a given population
+	 * @param population
 	 */
-	private Population seleccionar() {
-		Population resultado = configuracion.getSelector().seleccionar(poblacionInicial);
-		resultado = Population.copiarPoblacion(resultado);
-		return resultado;
-	}
-
-	/**
-	 * @param nuevaPoblacion
-	 */
-	private void operadorCruce(Population poblacion) {
-		List<Chromosome> cromosomasSeleccionados = new ArrayList<Chromosome>();
-		for (Chromosome c:poblacion.getCromosomas()) {
+	private void crossover(Population population) {
+		//TODO Extract behaviours to a Crossover interface
+		// Selects the chromosomes to use in the crossover using the configured
+		// probability
+		List<Chromosome> selectedChromosomes = new ArrayList<Chromosome>();
+		for (Chromosome c:population.getChromosomes()) {
 			double random = Math.random();
-			if (random < configuracion.getProbabilidadCruce()) {
-				cromosomasSeleccionados.add(c);
+			if (random < configuration.getCrossoverProbability()) {
+				selectedChromosomes.add(c);
 			}
 		}
+		
+		// it crosses the selected chromosomes pair by pair
 		int i = 0;
-		Iterator<Chromosome> itCromosomas = cromosomasSeleccionados.iterator();
-		Chromosome cPar = null;
-		while (itCromosomas.hasNext()) {
-			Chromosome cImpar = itCromosomas.next();
+		Iterator<Chromosome> itChromosomes = selectedChromosomes.iterator();
+		Chromosome evenChromosome = null;
+		while (itChromosomes.hasNext()) {
+			Chromosome oddChromosome = itChromosomes.next();
 			if (i%2==0) {
-//				Si es par
-				cPar = cImpar;
+				evenChromosome = oddChromosome;
 			} else {
-				cruzar(cPar, cImpar);
+				cross(evenChromosome, oddChromosome);
 			}
 			i++;
 		}
 		try {
-			poblacion.calcularCostesPoblacion();
+			population.calculatePopulationFitness();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * @param nuevaPoblacion
+	 * TODO Maybe extract to the future Crossover interface
+	 * Given two chromosomes, it performs a one point crossover operation
+	 * @param evenChromosome
+	 * @param oddChromosome
 	 */
-	
-	private void cruzar(Chromosome cPar, Chromosome cImpar) {
+	private void cross(Chromosome evenChromosome, Chromosome oddChromosome) {
 		Random random = new Random();
-		int max = cPar.getGenes().size();
-		int posCruce = random.nextInt(max);
-		int i = posCruce;
+		int size = evenChromosome.getGenes().size();
+		int crossoverPoint = random.nextInt(size);
 		
-		while (i < max) {
-			Gen genPar = cPar.getGenes().get(i);
-			Gen genImpar = cImpar.getGenes().get(i); 
-			Collections.replaceAll(cPar.getGenes(), genPar, genImpar);
-			Collections.replaceAll(cImpar.getGenes(), genImpar, genPar);
-			i++;
+		// Starting from the crossoverPoint, it interchanges the genes of the two chrSomosomes
+		while (crossoverPoint < size) {
+			Gene evenGene = evenChromosome.getGenes().get(crossoverPoint);
+			Gene oddGene = oddChromosome.getGenes().get(crossoverPoint); 
+			Collections.replaceAll(evenChromosome.getGenes(), evenGene, oddGene);
+			Collections.replaceAll(oddChromosome.getGenes(), oddGene, evenGene);
+			crossoverPoint++;
 		}
-//		log.debug("Resultado del cruce " + cPar + cImpar);
 	}
 
+
 	/**
-	 * @param nuevaPoblacion
-	 * @throws Exception 
-	 */	
-	private void operadorMutacion(Population poblacion) throws Exception {
-		for (Chromosome c:poblacion.getCromosomas()) {
-			for (Gen g:c.getGenes()) {
+	 * It implements the mutation operator
+	 * Uniform mutation behaviour
+	 * TODO maybe extract behaviour to a Mutator interface
+	 * @param population
+	 * @throws Exception
+	 */
+	private void mutation(Population population) throws Exception {
+		for (Chromosome c:population.getChromosomes()) {
+			boolean hasMutated = false;
+			for (Gene g:c.getGenes()) {
 				double random = Math.random();
-				if (random < configuracion.getProbabilidadMutacion()) {
-					g.generarValorAleatorio();
+				if (random < configuration.getMutationProbability()) {
+					hasMutated = true;
+					g.generateRandomValue();
 				}
 			}
-			c.calcularCoste(configuracion.getFuncionCoste());
+			// After mutation the fitness might have changed
+			if (hasMutated) {
+				c.calculateFitness(configuration.getFitnessFunction());
+			}
 		}
 	}
 
 	/**
-	 * @param nuevaPoblacion
+	 * Implements an elitist behaviour
+	 * If the best chromosome in the initial population gets carried away by worse chromosomes
+	 * it replaces the  worst chromosome in the new population
+	 * @param newPopulation
 	 */
-	private void operadorElitismo(Population nuevaPoblacion) {
-		Chromosome nuevoMejor = nuevaPoblacion.obtainFittest();		
-		Chromosome mejorPoblacionInicial = poblacionInicial.obtainFittest();
-		if (nuevoMejor.getCoste() < mejorPoblacionInicial.getCoste()) {
-			Chromosome peor = nuevaPoblacion.obtenerPeor();
-			nuevaPoblacion.sustituirCromosoma(peor, mejorPoblacionInicial);
+	private void elitism(Population newPopulation) {
+		Chromosome newBest = newPopulation.obtainBest();		
+		Chromosome initialBest = initialPopulation.obtainBest();
+		if (newBest.getFitness() < initialBest.getFitness()) {
+			Chromosome worst = newPopulation.getWorst();
+			newPopulation.replaceChromosome(worst, initialBest);
 		}
 	}
 }
