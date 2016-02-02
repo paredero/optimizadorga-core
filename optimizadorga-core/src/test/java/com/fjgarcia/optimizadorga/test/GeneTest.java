@@ -10,8 +10,8 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fjgarcia.optimizadorga.elementos.Gene;
-import com.fjgarcia.optimizadorga.elementos.GeneType;
+import com.uned.optimizadorga.model.Gene;
+import com.uned.optimizadorga.model.GeneType;
 
 /**
  * @author fpb
@@ -65,9 +65,9 @@ public class GeneTest {
 			param2.generateRandomValue();
 			System.out.println(param2);
 			assertTrue("El valor del gen es mayor que el minimo" + param2,
-					param2.getValue() >= param2.getGeneType().getMinimum());
+					param2.getValue() >= param2.getGeneType().getMin());
 			assertTrue("El valor del gen es menor que el maximo" + param2,
-					param2.getValue() <= param2.getGeneType().getMaximum());
+					param2.getValue() <= param2.getGeneType().getMax());
 			// Now it tests the formatting
 			String value = Double.toString(param2.getValue());
 			String[] valueParts = value.split("\\.");

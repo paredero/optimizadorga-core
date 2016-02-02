@@ -6,14 +6,14 @@ package com.fjgarcia.optimizadorga.test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fjgarcia.optimizadorga.elementos.Chromosome;
-import com.fjgarcia.optimizadorga.elementos.GeneType;
+import com.uned.optimizadorga.model.Chromosome;
+import com.uned.optimizadorga.model.GeneType;
 
 /**
  * @author fpb
@@ -33,10 +33,10 @@ public class ChromosomeTest {
 	 */
 	@Test
 	public void testGenerarAleatorio() {
-		Collection<GeneType> genesParametro = new ArrayList<GeneType>();
-		genesParametro.add(new GeneType("p1",0, 100, 3));
-		genesParametro.add(new GeneType("p2",100, 200, 3));
-		genesParametro.add(new GeneType("p3",200, 300, 3));
+		Map<String, GeneType> genesParametro = new HashMap<String, GeneType>();
+		genesParametro.put("p1",new GeneType("p1",0, 100, 3));
+		genesParametro.put("p2",new GeneType("p2",100, 200, 3));
+		genesParametro.put("p3",new GeneType("p3",200, 300, 3));
 		Chromosome c = Chromosome
 				.generateRandomChromosome(genesParametro);
 		
@@ -46,24 +46,24 @@ public class ChromosomeTest {
 				+ c.getGenes().size(), c.getGenes().size() == 3);
 		assertTrue("Valor Erroneo en gen p1" + c.getGenes().get(0), c
 				.getGenes().get(0).getValue() <= c
-						.getGenes().get(0).getGeneType().getMaximum());
+						.getGenes().get(0).getGeneType().getMax());
 		assertTrue("Valor Erroneo en gen p1" + c.getGenes().get(0), c
 				.getGenes().get(0).getValue() >= c
-						.getGenes().get(0).getGeneType().getMinimum());
+						.getGenes().get(0).getGeneType().getMin());
 
 		assertTrue("Valor Erroneo en gen p2" + c.getGenes().get(1), c
 				.getGenes().get(1).getValue() <= c
-						.getGenes().get(1).getGeneType().getMaximum());
+						.getGenes().get(1).getGeneType().getMax());
 		assertTrue("Valor Erroneo en gen p2" + c.getGenes().get(1), c
 				.getGenes().get(1).getValue() >= c
-						.getGenes().get(1).getGeneType().getMinimum());
+						.getGenes().get(1).getGeneType().getMin());
 
 		assertTrue("Valor Erroneo en gen p3" + c.getGenes().get(2), c
 				.getGenes().get(2).getValue() <= c
-						.getGenes().get(2).getGeneType().getMaximum());
+						.getGenes().get(2).getGeneType().getMax());
 		assertTrue("Valor Erroneo en gen p3" + c.getGenes().get(2), c
 				.getGenes().get(2).getValue() >= c
-						.getGenes().get(2).getGeneType().getMinimum());		
+						.getGenes().get(2).getGeneType().getMin());		
 	}
 
 }

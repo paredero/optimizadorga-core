@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.uned.optimizadorga.algorithm.cache.ChromosomeCache;
-
 /**
  * Model class representing a chromosome
  * @author Francisco Javier Garcia Paredero
@@ -34,7 +32,7 @@ public class Chromosome {
 			chromosome.getGenes().add(resultantGene);
 		}
 		/*
-		 * TODO Make some kind of ChromosomeDepositut
+		 * TODO Make some kind of ChromosomeCache
 		if (ChromosomeCache.containsChromosome(chromosome)) {
 			chromosome = ChromosomeCache.find(chromosome);
 		} else {

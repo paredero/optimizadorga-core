@@ -34,8 +34,8 @@ public class AlgoritmoTest implements AlgorithmObserver {
 		genesParametro.put("x1", new GeneType("x1", -3.0, 12.1, 1));
 		genesParametro.put("x2", new GeneType("x2", 4.1, 5.8, 1));
 		funcionCoste = new FitnessFunction(expresion,genesParametro);
-		c = Configuration.createConfiguration(3, 4,
-				funcionCoste, genesParametro, 3, 0.5, 0.5, false, SelectorType.ROULETTE);
+		c = Configuration.createConfiguration(100, 1000,
+				funcionCoste, genesParametro, 10000, 0.5, 0.5, false, SelectorType.ROULETTE);
 
 		a = new Algorithm(c);
 	}
