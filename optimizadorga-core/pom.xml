@@ -6,6 +6,13 @@
   <name>optimizadorga-core</name>
   <description>core libraries for the project optimizadorga</description>
   <dependencies>
+  
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>net.objecthunter</groupId>
 			<artifactId>exp4j</artifactId>

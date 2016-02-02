@@ -30,7 +30,7 @@ public class Population {
 		
 		for (int i = 0; i < configuration.getPopulationSize(); i++) {
 			population.getChromosomes().add(
-					Chromosome.generateRandomChromome(configuration
+					Chromosome.generateRandomChromosome(configuration
 							.getParameters()));			
 		}
 		population.setFitnessFunction(configuration.getFitnessFunction());
@@ -102,8 +102,8 @@ public class Population {
 	public Chromosome obtainBest() {
 		bestChromosome = Collections
 				.max(chromosomes, new BestFitnessComparator());
-
-		return bestChromosome;
+				return bestChromosome;
+		
 	}
 
 	/**
