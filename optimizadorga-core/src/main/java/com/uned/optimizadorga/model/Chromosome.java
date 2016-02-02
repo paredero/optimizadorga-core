@@ -14,7 +14,6 @@ import java.util.Map;
  *
  */
 public class Chromosome {
-	//TODO change it to a Double Object to deffer the calculation of fitness
 	private double fitness;
 	private List<Gene> genes;
 
