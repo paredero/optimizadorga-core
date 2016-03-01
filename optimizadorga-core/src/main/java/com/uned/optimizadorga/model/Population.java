@@ -98,9 +98,9 @@ public class Population {
 			public boolean test(Chromosome t) {
 				return t.getFitness() == 0.0;
 			}
-		}).forEach(individuo -> {
+		}).forEach(individual -> {
 			try {
-				individuo.calculateFitness(this.fitnessFunction);
+				individual.calculateFitness(this.fitnessFunction);
 			} catch (Exception e) {
 			}
 		});
