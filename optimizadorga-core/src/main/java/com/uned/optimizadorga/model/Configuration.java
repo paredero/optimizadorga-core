@@ -2,6 +2,7 @@ package com.uned.optimizadorga.model;
 
 import java.util.Map;
 
+import com.uned.optimizadorga.algorithm.cache.ChromosomeCache;
 import com.uned.optimizadorga.algorithm.selectors.Selector;
 import com.uned.optimizadorga.algorithm.selectors.SelectorFactory;
 import com.uned.optimizadorga.algorithm.selectors.SelectorType;
@@ -22,6 +23,7 @@ public class Configuration {
 	private double mutationProbability;
 	private Selector selector;
 	private boolean elitism;
+	private ChromosomeCache chromosomeCache;
 
 	private Configuration() {
 		super();
@@ -55,6 +57,7 @@ public class Configuration {
 		instancia.mutationProbability = mutationProbability;
 		instancia.elitism = useElitism;
 		instancia.selector = SelectorFactory.getInstance(selectorType);
+		instancia.chromosomeCache = new ChromosomeCache();
 		return instancia;
 	}
 
@@ -134,6 +137,11 @@ public class Configuration {
 
 	public void setElitism(boolean elitism) {
 		this.elitism = elitism;
+	}
+
+	
+	public ChromosomeCache getChromosomeCache() {
+		return this.chromosomeCache;
 	}
 
 	

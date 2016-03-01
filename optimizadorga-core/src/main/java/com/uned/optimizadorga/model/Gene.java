@@ -5,6 +5,7 @@ package com.uned.optimizadorga.model;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Model class representing represent a gene, with a value and a codification
@@ -43,7 +44,9 @@ public class Gene {
 	 * the configurated precission
 	 */
 	public void generateRandomValue() {
-		double randomValue = geneType.getMin() + (Math.random() * (geneType.getMax() - geneType.getMin()));
+		// TODO Find out which one
+//		double randomValue = geneType.getMin() + (Math.random() * (geneType.getMax() - geneType.getMin()));
+		double randomValue = ThreadLocalRandom.current().nextDouble(geneType.getMin(), geneType.getMax());
 		this.value = format(randomValue);
 	}
 

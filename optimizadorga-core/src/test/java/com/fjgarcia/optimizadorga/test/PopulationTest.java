@@ -1,16 +1,23 @@
 /**
  * 
  */
-package optimizadorga.test.elementos;
+package com.fjgarcia.optimizadorga.test;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.uned.optimizadorga.model.Chromosome;
+import com.uned.optimizadorga.model.Configuration;
+import com.uned.optimizadorga.model.Population;
+
+import optimizadorga.test.util.TestObjectsBuilder;
 
 /**
  * @author fpb
  *
  */
-public class PoblacionTest {
+public class PopulationTest {
 	
 	/**
 	 * @throws java.lang.Exception
@@ -21,22 +28,30 @@ public class PoblacionTest {
 
 	/**
 	 * Test method for {@link com.uned.optimizadorga.model.Population#generarPoblacionInicializada(int, java.util.List)}.
+	 * @throws Exception 
 	 */
 	@Test
-	public void testGenerarPoblacionInicializada() {
-//		Map<String, TipoGen> genesParametro = new HashMap();
-//		genesParametro.put("p1",new TipoGen("p1",0, 100, 3));
-//		genesParametro.put("p2",new TipoGen("p2",100, 200, 3));
-//		genesParametro.put("p3",new TipoGen("p3",200, 300, 3));
-//		Poblacion p = Poblacion
-//				.generarPoblacionInicializada(5, genesParametro);
-//		
-//		assertNotNull("La poblacion no se ha creado", p);
-//		assertTrue("El tama�o de la poblacion no se ha copiado " + p.getTamanio(),
-//				p.getTamanio() == 5);
-//		assertNotNull("La lista de cromosomas no se ha creado", p.getCromosomas());	
-//		
-//		log.debug(p);
+	public void testGenerarPoblacionInicializada() throws Exception {
+		Configuration c = TestObjectsBuilder.buildConfiguration();
+		long startTime = System.nanoTime();
+		int iterations = 100;
+		long[] allElapsedTimes = new long[iterations];
+		for (int i = 0; i < iterations; i++) {
+			long iterationStartTime = System.nanoTime();
+			Population p = Population.generateInitializedPopulation(c);
+			long iterationEndTime = System.nanoTime();
+			allElapsedTimes[i] = iterationEndTime - iterationStartTime;
+			System.out.println(iterationEndTime - iterationStartTime);
+			for (Chromosome cr:p.getChromosomes()) {
+				Assert.assertNotEquals(cr.getFitness(), 0.00, 0.00);
+			}
+		}
+		long avgTime = 0;
+		for (int i = 0; i < iterations; i++) {
+			avgTime += allElapsedTimes[i];
+		}
+		System.out.println("AvgTime: " + avgTime / (iterations));
+		System.out.println("TotalTime: " + (System.nanoTime() - startTime));
 	}
 	
 	@Test

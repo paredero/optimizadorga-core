@@ -25,4 +25,6 @@ public class BestFitnessComparator implements Comparator<Chromosome> {
 		}
 	}
 
+
+
 }

@@ -3,7 +3,9 @@ package com.uned.optimizadorga.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
+import com.uned.optimizadorga.algorithm.cache.ChromosomeCache;
 import com.uned.optimizadorga.algorithm.comparators.BestFitnessComparator;
 
 /**
@@ -15,7 +17,6 @@ public class Population {
 	private List<Chromosome> chromosomes;
 	private int size;
 	private FitnessFunction fitnessFunction;
-
 	private Chromosome bestChromosome;
 	
 	/**
@@ -25,13 +26,14 @@ public class Population {
 	 * @throws Exception 
 	 */
 	public static Population generateInitializedPopulation(Configuration configuration) throws Exception {
+		ChromosomeCache chromosomeCache = configuration.getChromosomeCache();
 		Population population = new Population();
 		population.setSize(configuration.getPopulationSize());
 		
 		for (int i = 0; i < configuration.getPopulationSize(); i++) {
-			population.getChromosomes().add(
-					Chromosome.generateRandomChromosome(configuration
-							.getParameters()));			
+			Chromosome chromosome = Chromosome.generateRandomChromosome(configuration
+					.getParameters());
+			population.getChromosomes().add(chromosomeCache.getItem(chromosome));			
 		}
 		population.setFitnessFunction(configuration.getFitnessFunction());
 		population.calculatePopulationFitness();
@@ -39,7 +41,7 @@ public class Population {
 	}
 
 	
-	public Population() {
+	private Population() {
 		super();
 		this.chromosomes = new ArrayList<Chromosome>();
 	}
@@ -91,9 +93,21 @@ public class Population {
 	 * @throws Exception 
 	 */
 	public void calculatePopulationFitness() throws Exception {
+		this.getChromosomes().parallelStream().filter(new Predicate<Chromosome>() {
+			@Override
+			public boolean test(Chromosome t) {
+				return t.getFitness() == 0.0;
+			}
+		}).forEach(individuo -> {
+			try {
+				individuo.calculateFitness(this.fitnessFunction);
+			} catch (Exception e) {
+			}
+		});
+		/*
 		for (Chromosome individuo : this.getChromosomes()) {
 			individuo.calculateFitness(this.fitnessFunction);
-		}
+		}*/
 	}
 
 	/**
