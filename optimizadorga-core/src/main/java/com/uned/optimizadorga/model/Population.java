@@ -29,7 +29,17 @@ public class Population {
 		ChromosomeCache chromosomeCache = configuration.getChromosomeCache();
 		Population population = new Population();
 		population.setSize(configuration.getPopulationSize());
-		
+		/*
+		IntStream.range(0, configuration.getPopulationSize()).parallel().forEach(new IntConsumer() {
+			
+			@Override
+			public void accept(int value) {
+				Chromosome chromosome = Chromosome.generateRandomChromosome(configuration
+						.getParameters());
+				population.getChromosomes().add(chromosomeCache.getItem(chromosome));		
+			}
+		});
+		*/
 		for (int i = 0; i < configuration.getPopulationSize(); i++) {
 			Chromosome chromosome = Chromosome.generateRandomChromosome(configuration
 					.getParameters());
@@ -102,12 +112,13 @@ public class Population {
 			try {
 				individual.calculateFitness(this.fitnessFunction);
 			} catch (Exception e) {
+				System.out.println("Error en la evaluación del individuo " + individual);
 			}
 		});
 		/*
-		for (Chromosome individuo : this.getChromosomes()) {
-			individuo.calculateFitness(this.fitnessFunction);
-		}*/
+		 for (Chromosome individuo : this.getChromosomes()) {
+		 individuo.calculateFitness(this.fitnessFunction); }
+		*/
 	}
 
 	/**
@@ -173,9 +184,5 @@ public class Population {
 		Collections.replaceAll(this.getChromosomes(), antiguo, new Chromosome(nuevo));
 		bestChromosome = null;
 	}
-
-
-	
-
 
 }

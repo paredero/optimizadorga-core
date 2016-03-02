@@ -91,12 +91,15 @@ public class FitnessFunction {
 
 
 	/**
-	 * Performs evaluation after setting parameters
+	 * Performs evaluation after setting parameters. Should be synchronized
+	 * since each evaluation should act with different parameter values and the
+	 * program is working with a single instance of the Function
+	 * 
 	 * @param parameterList
 	 * @return The value of the function runned with the parameters
 	 * @throws Exception
 	 */
-	public double evaluate(List<Gene> parameterList) throws Exception{		
+	synchronized public double evaluate(List<Gene> parameterList) throws Exception{		
 		for (Gene parameter:parameterList) {
 			expression.setVariable(parameter.getGeneType().getName().toLowerCase(), 
 					parameter.getValue());

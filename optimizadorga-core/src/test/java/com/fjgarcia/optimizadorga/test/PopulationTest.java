@@ -34,23 +34,15 @@ public class PopulationTest {
 	public void testGenerarPoblacionInicializada() throws Exception {
 		Configuration c = TestObjectsBuilder.buildConfiguration();
 		long startTime = System.nanoTime();
-		int iterations = 100;
-		long[] allElapsedTimes = new long[iterations];
-		for (int i = 0; i < iterations; i++) {
-			long iterationStartTime = System.nanoTime();
+		for (int j=0; j<c.getMaxEras();j++) {
 			Population p = Population.generateInitializedPopulation(c);
-			long iterationEndTime = System.nanoTime();
-			allElapsedTimes[i] = iterationEndTime - iterationStartTime;
-			System.out.println(iterationEndTime - iterationStartTime);
 			for (Chromosome cr:p.getChromosomes()) {
 				Assert.assertNotEquals(cr.getFitness(), 0.00, 0.00);
+				Chromosome crCompare = new Chromosome(cr);
+				crCompare.calculateFitness(c.getFitnessFunction());
+				Assert.assertEquals(cr.getFitness(), crCompare.getFitness(), 0.001);
 			}
 		}
-		long avgTime = 0;
-		for (int i = 0; i < iterations; i++) {
-			avgTime += allElapsedTimes[i];
-		}
-		System.out.println("AvgTime: " + avgTime / (iterations));
 		System.out.println("TotalTime: " + (System.nanoTime() - startTime));
 	}
 	
