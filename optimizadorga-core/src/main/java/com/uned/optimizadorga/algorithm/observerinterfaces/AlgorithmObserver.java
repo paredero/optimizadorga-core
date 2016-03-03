@@ -3,8 +3,11 @@
  */
 package com.uned.optimizadorga.algorithm.observerinterfaces;
 
+import java.util.List;
+
 import com.uned.optimizadorga.algorithm.Era;
 import com.uned.optimizadorga.algorithm.Generation;
+import com.uned.optimizadorga.model.Population;
 
 /**
  * Observer interface to keep updated of the algorithm progress.
@@ -44,4 +47,6 @@ public interface AlgorithmObserver {
 	 * Method used to send an update to an observer when an error occurs
 	 */
 	public void updateError(Exception e);
+
+	public void updateEndEraExecution(List<Population> resultEra);
 }

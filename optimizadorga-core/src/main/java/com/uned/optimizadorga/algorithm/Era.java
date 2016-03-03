@@ -17,13 +17,13 @@ import com.uned.optimizadorga.model.Population;
  *
  */
 public class Era implements EraSubject {
-	private Configuration configuration;
-	private Population initialPopulation;
+	protected Configuration configuration;
+	protected Population initialPopulation;
 	private List<EraObserver> observers;
 	
 	// Keeps the population generated as a result of the evolution in the
 	// computation
-	private List<Population> evolvedPopulations;
+	protected List<Population> evolvedPopulations;
 	private Chromosome bestIndividual;
 	
 
@@ -52,13 +52,13 @@ public class Era implements EraSubject {
 	 * Creates the initial population
 	 * @throws Exception
 	 */
-	private void initializePopulation() throws Exception {
+	protected void initializePopulation() throws Exception {
 		this.initialPopulation = Population.generateInitializedPopulation(configuration);
 		this.evolvedPopulations = new ArrayList<Population>(configuration.getMaxGens());
 		this.evolvedPopulations.add(initialPopulation);
 	}
 	
-	private void executeLoop() throws Exception {
+	protected void executeLoop() throws Exception {
 		int currentGeneration = 0;
 		while (!Thread.currentThread().isInterrupted() && currentGeneration < configuration.getMaxGens()) {
 			Generation generation = new Generation(initialPopulation,

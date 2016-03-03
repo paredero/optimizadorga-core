@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.uned.optimizadorga.algorithm.cache.ChromosomeCache;
-
 /**
  * Model class representing a chromosome
  * @author Francisco Javier Garcia Paredero
@@ -91,7 +89,7 @@ public class Chromosome {
 	 */
 	@Override
 	public String toString() {
-		return "\t" + this.hashCode() +" [fitness=" + fitness + ", genes=" + genes + "]";
+		return "\n\t" + this.hashCode() +" [fitness=" + fitness + ", genes=" + genes + "]";
 	}
 	
 	/* (non-Javadoc)

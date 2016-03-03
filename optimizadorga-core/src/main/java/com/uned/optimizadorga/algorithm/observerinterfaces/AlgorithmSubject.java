@@ -1,7 +1,10 @@
 package com.uned.optimizadorga.algorithm.observerinterfaces;
 
+import java.util.List;
+
 import com.uned.optimizadorga.algorithm.Era;
 import com.uned.optimizadorga.algorithm.Generation;
+import com.uned.optimizadorga.model.Population;
 
 /**
  * Interface to implement the observer pattern so the progress of the algoritm
@@ -48,4 +51,6 @@ public interface AlgorithmSubject {
 	 * If an error happens during execution, the observers are notified
 	 */
 	public void notifyError(Exception e);
+
+	void notifyEndEraExecution(List<Population> resultEra);
 }

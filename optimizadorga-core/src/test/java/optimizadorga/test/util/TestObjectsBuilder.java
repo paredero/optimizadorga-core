@@ -16,9 +16,9 @@ import com.uned.optimizadorga.model.GeneType;
  */
 public class TestObjectsBuilder {
 	private static String functionToTest = "21.5 + x1 * sin(4 * pi * x1) + x2 * sin(4 * pi * x2)";
-	private static int erasToTest = 100;
-	private static int generationsToTest = 1000;
-	private static int populationSizeToTest = 10000;
+	private static int erasToTest = 1;
+	private static int generationsToTest = 100000;
+	private static int populationSizeToTest = 10;
 	private static double crossoverProbability = 0.5;
 	private static double mutationProbability = 0.5;
 	private static boolean testWithElitism = true;

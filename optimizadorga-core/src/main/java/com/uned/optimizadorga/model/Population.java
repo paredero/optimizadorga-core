@@ -25,7 +25,7 @@ public class Population {
 	 * @return A randomly initialized population
 	 * @throws Exception 
 	 */
-	public static Population generateInitializedPopulation(Configuration configuration) throws Exception {
+	public static synchronized Population generateInitializedPopulation(Configuration configuration) throws Exception {
 		ChromosomeCache chromosomeCache = configuration.getChromosomeCache();
 		Population population = new Population();
 		population.setSize(configuration.getPopulationSize());
@@ -75,6 +75,7 @@ public class Population {
 
 	public void setSize(int size) {
 		this.size = size;
+		this.chromosomes = new ArrayList<Chromosome>(size);
 	}
 
 
@@ -103,6 +104,7 @@ public class Population {
 	 * @throws Exception 
 	 */
 	public void calculatePopulationFitness() throws Exception {
+		/*
 		this.getChromosomes().parallelStream().filter(new Predicate<Chromosome>() {
 			@Override
 			public boolean test(Chromosome t) {
@@ -115,10 +117,11 @@ public class Population {
 				System.out.println("Error en la evaluación del individuo " + individual);
 			}
 		});
-		/*
-		 for (Chromosome individuo : this.getChromosomes()) {
-		 individuo.calculateFitness(this.fitnessFunction); }
 		*/
+		for (Chromosome individuo : this.getChromosomes()) {
+			individuo.calculateFitness(this.fitnessFunction);
+		}
+		
 	}
 
 	/**
@@ -146,7 +149,7 @@ public class Population {
 	 * @param population
 	 * @return an empty but configurated population
 	 */
-	public static Population copyEmptyPopulation(Population population) {
+	public static synchronized Population copyEmptyPopulation(Population population) {
 		Population copy = new Population();
 		copy.setFitnessFunction(population.getFitnessFunction());
 		copy.setSize(population.getSize());
@@ -158,16 +161,11 @@ public class Population {
 	 * @param originalPopulation
 	 * @return
 	 */
-	public static Population copyPopulation(Population originalPopulation) {
+	public static synchronized Population copyPopulation(Population originalPopulation) {
 		Population copy = new Population();
 		copy.setFitnessFunction(originalPopulation.getFitnessFunction());
 		copy.setSize(originalPopulation.getSize());
-		List<Chromosome> chromosomeList = new ArrayList<Chromosome>();
-		for (Chromosome c:originalPopulation.getChromosomes()) {
-			Chromosome newChromosome = new Chromosome(c);
-			chromosomeList.add(newChromosome);
-		}
-		copy.setChromosomes(chromosomeList);
+		copy.getChromosomes().addAll(originalPopulation.getChromosomes());
 		return copy;
 	}
 	
@@ -175,14 +173,22 @@ public class Population {
 
 	
 	/**
-	 * Sustituye en la poblacion un cromosoma por otro
-	 * @param antiguo
-	 * @param nuevo
+	 * Replaces a chromosome in the population
+	 * @param oldChromosome
+	 * @param newChromosome
 	 */
-	public void replaceChromosome(Chromosome antiguo,
-			Chromosome nuevo) {
-		Collections.replaceAll(this.getChromosomes(), antiguo, new Chromosome(nuevo));
+	public void replaceOneChromosome(Chromosome oldChromosome,
+			Chromosome newChromosome) {
+		this.getChromosomes().set(this.getChromosomes().indexOf(oldChromosome), newChromosome);
 		bestChromosome = null;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Population [chromosomes=" + chromosomes + "]";
+	}
+
+	
+	
 }

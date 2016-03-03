@@ -24,6 +24,10 @@ public class ChromosomeCache {
 		}
 		return allItems.get(item);	
 	}
+	
+	public boolean containsKey(Chromosome item) {
+		return allItems.containsKey(item);
+	}
 
 	public ChromosomeCache() {
 		super();

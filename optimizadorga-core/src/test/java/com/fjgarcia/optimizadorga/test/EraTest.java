@@ -1,7 +1,7 @@
 /**
  * 
  */
-package optimizadorga.test.algoritmo;
+package com.fjgarcia.optimizadorga.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,8 +32,7 @@ public class EraTest implements EraObserver {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		c = TestObjectsBuilder.buildConfiguration();
-		
+		c = TestObjectsBuilder.buildConfiguration();		
 	}
 
 
@@ -41,7 +40,7 @@ public class EraTest implements EraObserver {
 	 * Test method for {@link com.uned.optimizadorga.algorithm.Era#execute()}.
 	 */
 	@Test
-	public void testEjecutar() {
+	public void testExecute() {
 		Instant start = Instant.now();
 		Era era = new Era(c);
 		era.registerObserver(this);

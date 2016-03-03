@@ -7,6 +7,7 @@ import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmObserver;
 import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmSubject;
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
 import com.uned.optimizadorga.model.Configuration;
+import com.uned.optimizadorga.model.Population;
 /**
  * Implementation of the evolutionary algorithm
  * It implements several interfaces
@@ -19,9 +20,9 @@ import com.uned.optimizadorga.model.Configuration;
  */
 public class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
 
-	private Configuration configuration;
+	protected Configuration configuration;
 	// Keeps the list of observers
-	private List<AlgorithmObserver> observers;
+	protected List<AlgorithmObserver> observers;
 	
 	public Algorithm(Configuration configuracion) {
 		this.configuration = configuracion;
@@ -147,6 +148,12 @@ public class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
 		// when the algoritm receives an update about the finishing of a generation
 		// it just routes the result to the observers
 		this.notifyEndGenerationExecution(generacionProcesada);
+	}
+
+	@Override
+	public void notifyEndEraExecution(List<Population> resultEra) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

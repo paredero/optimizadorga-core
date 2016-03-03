@@ -28,7 +28,7 @@ public class TournamentSelector implements Selector {
 	public Population select(Population initialPopulation) {
 		// 1 It creates an empty population with the same configuration
 		Population selectedPopulation = Population.copyEmptyPopulation(initialPopulation);
-		List<Chromosome> selectedChromosomes = new ArrayList<Chromosome>();
+		List<Chromosome> selectedChromosomes = new ArrayList<Chromosome>(selectedPopulation.getSize());
 
 		Population samplePopulation = Population.copyEmptyPopulation(initialPopulation);
 		samplePopulation.setSize(tournamentSize);
