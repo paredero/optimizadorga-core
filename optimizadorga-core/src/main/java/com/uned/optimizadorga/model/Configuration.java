@@ -58,12 +58,6 @@ public class Configuration {
 		return instancia;
 	}
 
-	
-
-	// ************************************************************************
-	//	GETTER & SETTER METHODS
-	// ************************************************************************
-	
 	public int getMaxEras() {
 		return maxEras;
 	}

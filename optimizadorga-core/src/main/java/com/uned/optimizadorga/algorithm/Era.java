@@ -2,6 +2,7 @@ package com.uned.optimizadorga.algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraSubject;
@@ -16,7 +17,7 @@ import com.uned.optimizadorga.model.Population;
  * @author Francisco Javier Garcia Paredero
  *
  */
-public class Era implements EraSubject {
+public class Era implements EraSubject, Callable<Era> {
 	private Configuration configuration;
 	private Population initialPopulation;
 	private List<EraObserver> observers;
@@ -26,15 +27,18 @@ public class Era implements EraSubject {
 	private List<Population> evolvedPopulations;
 	private Chromosome bestIndividual;
 	
-
-	
 	public Era(Configuration configuration) {
 		super();
 		this.configuration = configuration;
 		observers = new ArrayList<EraObserver>();
 	}
 
-
+	@Override
+	public Era call() throws Exception {
+		this.execute();
+		return this;
+	}
+	
 	/**
 	 * Performs the execution of the evolution
 	 * @throws Exception
@@ -103,7 +107,6 @@ public class Era implements EraSubject {
 			o.updateGeneracion(generacionProcesada);
 		}
 	}
-
 
 	/**
 	 * @return the populations generated during the execution of

@@ -9,8 +9,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.uned.optimizadorga.algorithm.Algorithm;
+import com.uned.optimizadorga.algorithm.ConcurrentAlgorithm;
 import com.uned.optimizadorga.algorithm.Era;
 import com.uned.optimizadorga.algorithm.Generation;
+import com.uned.optimizadorga.algorithm.SynchronousAlgorithm;
 import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmObserver;
 import com.uned.optimizadorga.algorithm.selectors.SelectorType;
 import com.uned.optimizadorga.model.Configuration;
@@ -19,83 +21,67 @@ import com.uned.optimizadorga.model.GeneType;
 
 public class AlgoritmoTest implements AlgorithmObserver {
 
-	private FitnessFunction funcionCoste;
+	private static final int ERAS_TO_RUN = 4;
+	private static final int GENERATIONS_TO_RUN = 1000;
+	private FitnessFunction fitnessFunction;
 	private Configuration c;
-	private Algorithm a;
-	private int notificacionesFin;
-	private int notificacionesGeneracion;
-	private int notificacionesEra;
+	private Algorithm algorithm;
+	private int endNotifications;
+	private int generationNotifications;
+	private int eraNotifications;
 
 	@Before
 	public void setUp() throws Exception {
-		String expresion = "21.5 + x1 * sin(4 * pi * x1) + x2 * sin(4 * pi * x2)";
+		String expression = "21.5 + x1 * sin(4 * pi * x1) + x2 * sin(4 * pi * x2)";
 		
-		Map<String, GeneType> genesParametro = new HashMap<String, GeneType>();
-		genesParametro.put("x1", new GeneType("x1", -3.0, 12.1, 1));
-		genesParametro.put("x2", new GeneType("x2", 4.1, 5.8, 1));
-		funcionCoste = new FitnessFunction(expresion,genesParametro);
-		c = Configuration.createConfiguration(100, 1000,
-				funcionCoste, genesParametro, 10000, 0.5, 0.5, false, SelectorType.ROULETTE);
+		Map<String, GeneType> geneTypeMap = new HashMap<String, GeneType>();
+		geneTypeMap.put("x1", new GeneType("x1", -3.0, 12.1, 1));
+		geneTypeMap.put("x2", new GeneType("x2", 4.1, 5.8, 1));
+		fitnessFunction = new FitnessFunction(expression,geneTypeMap);
+		c = Configuration.createConfiguration(ERAS_TO_RUN, GENERATIONS_TO_RUN,
+				fitnessFunction, geneTypeMap, 100, 0.5, 0.5, false, SelectorType.ROULETTE);
 
-		a = new Algorithm(c);
+		
 	}
 
 
 	@Test
-	public void testRun() {
-		a.registerObserver(this);
-		a.run();
-		assertEquals("Faltan notificaciones por eras", notificacionesEra,3);
-		assertEquals("Faltan notificaciones por Generaciones", notificacionesGeneracion,12);
-		assertEquals("Faltan notificaciones por fin", notificacionesFin,1);
+	public void testSynchronousRun() {
+		algorithm = new SynchronousAlgorithm(c);
+		algorithm.registerObserver(this);
+		algorithm.run();
+		assertEquals("Number of era notifications doesnt match", eraNotifications,ERAS_TO_RUN);
+		assertEquals("Number of generation notifications doesnt match", generationNotifications,ERAS_TO_RUN*GENERATIONS_TO_RUN);
+		assertEquals("Unexpected number of end notifications", endNotifications,1);
 	}
 
 	@Test
-	public void testRegisterObserver() {
-//		fail("Not yet implemented");
+	public void testAsynchronousRun() throws InterruptedException {
+		algorithm = new ConcurrentAlgorithm(c);
+		algorithm.registerObserver(this);
+		Thread threadAlgorithm = new Thread(algorithm);
+		threadAlgorithm.start();		
+		threadAlgorithm.join();
+		assertEquals("Number of era notifications doesnt match", eraNotifications,ERAS_TO_RUN);
+		assertEquals("Number of generation notifications doesnt match", generationNotifications,ERAS_TO_RUN*GENERATIONS_TO_RUN);
+		assertEquals("Unexpected number of end notifications", endNotifications,1);
 	}
-
-	@Test
-	public void testNotifyEra() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNotifyGeneracion() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNotifyFin() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetConfiguracion() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testUpdateGeneracion() {
-//		fail("Not yet implemented");
-	}
-
-
+	
 	@Override
 	public void updateEndEraExecution(Era resultadoParcial) {
-		notificacionesEra++;
+		eraNotifications++;
 	}
 
 
 	@Override
 	public void updateEndGenerationExecution(Generation resultadoParcial) {
-		notificacionesGeneracion++;
+		generationNotifications++;
 	}
 
 
 	@Override
 	public void updateEnd() {
-		notificacionesFin++;
+		endNotifications++;
 	}
 
 

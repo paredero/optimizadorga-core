@@ -11,37 +11,35 @@ import com.uned.optimizadorga.model.Configuration;
  * Implementation of the evolutionary algorithm
  * It implements several interfaces
  * 	Runnable: So it can run asynchronously from the caller
- * 	AlgorithmSubject: So it can be observed by external classes
+ * 	AlgorithmSubject: So it can be observed by external classes. It provides functionality for:
+ * 		register an observer
+ * 		send a notification when the execution of an era finishes
+ * 		send a notification when the execution of a generation finishes
+ * 		send a notification when the execution of the algorithm finishes
+ * 		send a notification when an error is detected
  * 	EraObservers: So it can be updated about the progress of each era
  * 
  * @author Francisco Javier García Paredero
  *
  */
-public class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
+public abstract class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
 
-	private Configuration configuration;
+	protected Configuration configuration;
 	// Keeps the list of observers
 	private List<AlgorithmObserver> observers;
 	
-	public Algorithm(Configuration configuracion) {
-		this.configuration = configuracion;
+	public Algorithm(Configuration configuration) {
+		this.configuration = configuration;
 		observers = new ArrayList<AlgorithmObserver>();	
 	}
 
 	/**
-	 * Runs the configurated eras
+	 * Runs the configurated number of eras
 	 */
 	@Override
 	public void run() {	
 		try {
-			for (int currentEra = 1; currentEra <= configuration.getMaxEras(); currentEra++) {
-				Era era = new Era(configuration);
-				// The algorithm observs the eras execution
-				// so it can infom about the progress
-				era.registerObserver(this);
-				era.execute();
-				this.notifyEndEraExecution(era);
-			}
+			eraExecution();
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.notifyError(e);
@@ -49,17 +47,10 @@ public class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
 		this.notifyEndExecution();
 	}
 
-
-	/*
-	 * -------------------------------------------------------------------------
-	 * BEHAVIOUR AS AN ALGORITHM SUBJECT
-	 * 	As an algorithm subject it provides functionality for:
-	 * 		register an observer
-	 * 		send a notification when the execution of an era finishes
-	 * 		send a notification when the execution of a generation finishes
-	 * 		send a notification when the execution of the algorithm finishes
-	 * 		send a notification when an error is detected
+	/**
+	 * @throws Exception
 	 */
+	protected abstract void eraExecution() throws Exception;
 
 	/*
 	 * (non-Javadoc)

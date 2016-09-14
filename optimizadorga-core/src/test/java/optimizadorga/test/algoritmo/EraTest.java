@@ -4,9 +4,7 @@
 package optimizadorga.test.algoritmo;
 
 import static org.junit.Assert.assertEquals;
-
-import java.time.Duration;
-import java.time.Instant;
+import optimizadorga.test.util.TestObjectsBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +13,6 @@ import com.uned.optimizadorga.algorithm.Era;
 import com.uned.optimizadorga.algorithm.Generation;
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
 import com.uned.optimizadorga.model.Configuration;
-
-import optimizadorga.test.util.TestObjectsBuilder;
 
 /**
  * @author fpb
@@ -32,8 +28,7 @@ public class EraTest implements EraObserver {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		c = TestObjectsBuilder.buildConfiguration();
-		
+		c = TestObjectsBuilder.buildConfiguration();		
 	}
 
 
@@ -42,7 +37,6 @@ public class EraTest implements EraObserver {
 	 */
 	@Test
 	public void testEjecutar() {
-		Instant start = Instant.now();
 		Era era = new Era(c);
 		era.registerObserver(this);
 		try {
@@ -50,10 +44,8 @@ public class EraTest implements EraObserver {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		assertEquals("No se han recibido las notificaciones necesarias",
+		assertEquals("Not enough notifications received",
 				c.getMaxGens(), numeroActualizaciones);
-		System.out.println(Duration.between(start, Instant.now()));
-		// PT16.489S
 	}
 
 	/**

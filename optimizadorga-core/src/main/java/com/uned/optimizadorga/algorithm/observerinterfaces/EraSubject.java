@@ -24,4 +24,5 @@ public interface EraSubject {
 	 * @param processedGeneration
 	 */
 	public void notifyGeneracion(Generation processedGeneration);
+
 }

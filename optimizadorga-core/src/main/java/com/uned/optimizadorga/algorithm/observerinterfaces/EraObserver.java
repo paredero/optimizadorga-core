@@ -18,4 +18,5 @@ public interface EraObserver {
 	 * @param S
 	 */
 	public void updateGeneracion(Generation processedGeneration);
+
 }

@@ -77,8 +77,9 @@ public class Generation {
 	/**
 	 * Applies the crossover operator on a given population
 	 * @param population
+	 * @throws Exception 
 	 */
-	private void crossover(Population population) {
+	private void crossover(Population population) throws Exception {
 		//TODO Extract behaviours to a Crossover interface
 		// Selects the chromosomes to use in the crossover using the configured
 		// probability
@@ -103,11 +104,7 @@ public class Generation {
 			}
 			i++;
 		}
-		try {
-			population.calculatePopulationFitness();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		population.calculatePopulationFitness();
 	}
 	
 	/**

@@ -3,8 +3,8 @@
  */
 package optimizadorga.test.algoritmo;
 
-import java.time.Duration;
-import java.time.Instant;
+import static org.junit.Assert.assertEquals;
+import optimizadorga.test.util.TestObjectsBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,39 +13,40 @@ import com.uned.optimizadorga.algorithm.Generation;
 import com.uned.optimizadorga.model.Configuration;
 import com.uned.optimizadorga.model.Population;
 
-import optimizadorga.test.util.TestObjectsBuilder;
-
 /**
  * @author fjgarcia
  * 
  */
 public class GeneracionTest {
 	Generation g;
+	private Configuration configuration;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		Configuration c = TestObjectsBuilder.buildConfiguration();
-		
-		Population p = Population.generateInitializedPopulation(c);
-		g = new Generation(p, c);
+		configuration = TestObjectsBuilder.buildConfiguration();
+
+		Population p = Population.generateInitializedPopulation(configuration);
+		g = new Generation(p, configuration);
 	}
 
 	/**
 	 * Test method for
 	 * {@link com.uned.optimizadorga.algorithm.Generation#execute()}.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
-	public void testEjecutar() {
-		Instant start = Instant.now();
-		try {
-			g.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println(Duration.between(start, Instant.now()));
-		// Tiempo incial 16-12:17:24 PT0.503S
+	public void testExecute() throws Exception {
+		g.execute();
+		assertEquals("Unexpected Evolved Population size",
+				configuration.getPopulationSize(), g.getEvolvedPopulation()
+						.getSize());
+		assertEquals("Unexpected Initial Population size",
+				configuration.getPopulationSize(), g.getInitialPopulation()
+						.getSize());
 	}
 
 }
