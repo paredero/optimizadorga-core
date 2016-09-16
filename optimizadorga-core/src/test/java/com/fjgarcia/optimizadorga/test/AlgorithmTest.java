@@ -26,6 +26,7 @@ public class AlgorithmTest implements AlgorithmObserver {
 	protected int notificacionesFin;
 	protected int notificacionesGeneracion;
 	protected int notificacionesEra;
+	protected int errors;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -33,7 +34,6 @@ public class AlgorithmTest implements AlgorithmObserver {
 		a = new SynchronousAlgorithm(config);
 		a.registerObserver(this);
 	}
-
 
 	@Test
 	public void testRun() throws Exception {
@@ -47,62 +47,26 @@ public class AlgorithmTest implements AlgorithmObserver {
 		a.call();
 		fail();
 	}
-	
-	@Test
-	public void testRegisterObserver() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNotifyEra() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNotifyGeneracion() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testNotifyFin() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetConfiguracion() {
-//		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testUpdateGeneracion() {
-//		fail("Not yet implemented");
-	}
-
 
 	@Override
 	public void updateEndEraExecution(Era resultadoParcial) {
 		notificacionesEra++;
 	}
 
-
 	@Override
 	public void updateEndGenerationExecution(Generation resultadoParcial) {
 		notificacionesGeneracion++;
-//		System.out.println("End generation in "+(System.nanoTime()-startTime));
 	}
-
 
 	@Override
 	public void updateEnd() {
 		notificacionesFin++;
 	}
 
-
 	@Override
 	public void updateError(Exception e) {
-		
+		errors++;
 	}
-
 
 	@Override
 	public void updateEndEraExecution(List<Population> resultEra) {
@@ -123,4 +87,44 @@ public class AlgorithmTest implements AlgorithmObserver {
 		}
 	}
 
+	@Test
+	public void testNotifyError() {
+		class CustomAlgorithmObserver implements AlgorithmObserver {
+			boolean isErrorNotified;
+			@Override
+			public void updateEndEraExecution(Era processedEra) {}
+
+			@Override
+			public void updateEndGenerationExecution(Generation processedGeneration) {}
+
+			@Override
+			public void updateEnd() {}
+
+			@Override
+			public void updateError(Exception e) {
+				isErrorNotified = true;
+			}
+
+			@Override
+			public void updateEndEraExecution(List<Population> resultEra) {}
+			
+			public boolean isErrorNotified() {
+				return isErrorNotified;
+			}
+		}
+		CustomAlgorithmObserver testObject = new CustomAlgorithmObserver();
+		a.registerObserver(testObject);
+		config.setFitnessFunction(null);
+		try {
+			a.call();
+		} catch (Exception e) {
+		}
+		Assert.assertTrue("The error has not been notified", testObject.isErrorNotified());
+	}
+	
+	@Test
+	public void testGetConfiguration() throws Exception {
+		a.call();
+		Assert.assertNotNull(a.getConfiguracion());
+	}
 }
