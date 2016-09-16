@@ -32,7 +32,6 @@ public class PopulationTest {
 	@Test
 	public void testGenerarPoblacionInicializada() throws Exception {
 		Configuration c = TestObjectsBuilder.buildConfiguration();
-		long startTime = System.nanoTime();
 		for (int j=0; j<c.getMaxEras();j++) {
 			Population p = Population.generateInitializedPopulation(c);
 			for (Chromosome cr:p.getChromosomes()) {
@@ -42,6 +41,5 @@ public class PopulationTest {
 				Assert.assertEquals(cr.getFitness(), crCompare.getFitness(), 0.001);
 			}
 		}
-		System.out.println("TotalTime: " + (System.nanoTime() - startTime));
 	}
 }
