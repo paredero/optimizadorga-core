@@ -3,9 +3,7 @@ package com.uned.optimizadorga.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 
-import com.uned.optimizadorga.algorithm.cache.ChromosomeCache;
 import com.uned.optimizadorga.algorithm.comparators.BestFitnessComparator;
 
 /**
