@@ -13,12 +13,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fjgarcia.optimizadorga.test.util.TestObjectsBuilder;
 import com.uned.optimizadorga.algorithm.Generation;
 import com.uned.optimizadorga.model.Chromosome;
 import com.uned.optimizadorga.model.Configuration;
 import com.uned.optimizadorga.model.Population;
-
-import optimizadorga.test.util.TestObjectsBuilder;
 
 /**
  * @author fjgarcia

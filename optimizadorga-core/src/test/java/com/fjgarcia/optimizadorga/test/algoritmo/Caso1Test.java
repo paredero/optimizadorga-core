@@ -1,4 +1,4 @@
-package optimizadorga.test.algoritmo;
+package com.fjgarcia.optimizadorga.test.algoritmo;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 
 /**
- * Test para calcular valores maximos mediante algoritmo de búsqueda en todo el espacio de soluciones
+ * Test para calcular valores maximos mediante algoritmo de bï¿½squeda en todo el espacio de soluciones
  * @author fjgarcia
  *
  */

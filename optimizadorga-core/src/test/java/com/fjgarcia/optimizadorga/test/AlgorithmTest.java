@@ -5,12 +5,11 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import optimizadorga.test.util.TestObjectsBuilder;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fjgarcia.optimizadorga.test.util.TestObjectsBuilder;
 import com.uned.optimizadorga.algorithm.Algorithm;
 import com.uned.optimizadorga.algorithm.Era;
 import com.uned.optimizadorga.algorithm.Generation;

@@ -1,9 +1,8 @@
 package com.fjgarcia.optimizadorga.test;
 
-import optimizadorga.test.util.TestObjectsBuilder;
-
 import org.junit.Before;
 
+import com.fjgarcia.optimizadorga.test.util.TestObjectsBuilder;
 import com.uned.optimizadorga.algorithm.ConcurrentAlgorithm;
 
 public class ConcurrentAlgorithmTest extends AlgorithmTest {

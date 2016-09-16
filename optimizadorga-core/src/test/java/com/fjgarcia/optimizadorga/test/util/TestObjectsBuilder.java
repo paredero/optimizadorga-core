@@ -1,4 +1,4 @@
-package optimizadorga.test.util;
+package com.fjgarcia.optimizadorga.test.util;
 
 import java.util.HashMap;
 import java.util.Map;

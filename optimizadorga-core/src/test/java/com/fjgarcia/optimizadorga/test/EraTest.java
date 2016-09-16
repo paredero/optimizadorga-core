@@ -9,13 +9,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
-import optimizadorga.test.util.TestObjectsBuilder;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.fjgarcia.optimizadorga.test.util.TestObjectsBuilder;
 import com.uned.optimizadorga.algorithm.Era;
 import com.uned.optimizadorga.algorithm.Generation;
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
