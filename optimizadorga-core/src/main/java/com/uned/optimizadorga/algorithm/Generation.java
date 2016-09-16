@@ -35,15 +35,15 @@ public class Generation {
 	 * Executes the evolution of a generation
 	 * @throws Exception
 	 */
-	public void execute() throws Exception {
+	public Population execute() throws Exception {
 		newPopulation = this.select();
-		this.crossover(newPopulation);
-		this.mutation(newPopulation);
+		newPopulation = crossover(newPopulation);
+		newPopulation = this.mutation(newPopulation);
 		// If elitism is configured, then the operator is executed
 		if (this.configuration.getElitism()) {
-			this.elitism(newPopulation);
+			newPopulation = this.elitism(newPopulation);
 		}
-		
+		return newPopulation;
 	}
 	
 	
@@ -68,9 +68,8 @@ public class Generation {
 	 * new population
 	 * @return a new population after applying the selector
 	 */
-	private Population select() {
+	public Population select() {
 		Population result = configuration.getSelector().select(initialPopulation);
-		result = Population.copyPopulation(result);
 		return result;
 	}
 
@@ -79,7 +78,7 @@ public class Generation {
 	 * @param population
 	 * @throws Exception 
 	 */
-	private void crossover(Population population) throws Exception {
+	public Population crossover(Population population) throws Exception {
 		//TODO Extract behaviours to a Crossover interface
 		// Selects the chromosomes to use in the crossover using the configured
 		// probability
@@ -105,6 +104,7 @@ public class Generation {
 			i++;
 		}
 		population.calculatePopulationFitness();
+		return population;
 	}
 	
 	/**
@@ -134,9 +134,10 @@ public class Generation {
 	 * Uniform mutation behaviour
 	 * TODO maybe extract behaviour to a Mutator interface
 	 * @param population
+	 * @return 
 	 * @throws Exception
 	 */
-	private void mutation(Population population) throws Exception {
+	public Population mutation(Population population) throws Exception {
 		for (Chromosome c:population.getChromosomes()) {
 			boolean hasMutated = false;
 			for (Gene g:c.getGenes()) {
@@ -151,6 +152,7 @@ public class Generation {
 				c.calculateFitness(configuration.getFitnessFunction());
 			}
 		}
+		return population;
 	}
 
 	/**
@@ -158,13 +160,15 @@ public class Generation {
 	 * If the best chromosome in the initial population gets carried away by worse chromosomes
 	 * it replaces the  worst chromosome in the new population
 	 * @param newPopulation
+	 * @return 
 	 */
-	private void elitism(Population newPopulation) {
+	public Population elitism(Population newPopulation) {
 		Chromosome newBest = newPopulation.obtainBest();		
 		Chromosome initialBest = initialPopulation.obtainBest();
 		if (newBest.getFitness() < initialBest.getFitness()) {
 			Chromosome worst = newPopulation.getWorst();
 			newPopulation.replaceChromosome(worst, initialBest);
 		}
+		return newPopulation;
 	}
 }

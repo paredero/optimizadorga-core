@@ -19,7 +19,7 @@ import com.uned.optimizadorga.model.GeneType;
  * @author fpb
  *
  */
-public class CromosomaTest {
+public class ChromosomeTest {
 
 	/**
 	 * @throws java.lang.Exception
@@ -32,7 +32,7 @@ public class CromosomaTest {
 	 * Test method for {@link com.uned.optimizadorga.model.Chromosome#generarAleatorio(java.util.List)}.
 	 */
 	@Test
-	public void testGenerarAleatorio() {
+	public void testGenerateRandomChromosome() {
 		Map<String, GeneType> genesParametro = new HashMap<String, GeneType>();
 		genesParametro.put("p1",new GeneType("p1",0, 100, 3));
 		genesParametro.put("p2",new GeneType("p2",100, 200, 3));

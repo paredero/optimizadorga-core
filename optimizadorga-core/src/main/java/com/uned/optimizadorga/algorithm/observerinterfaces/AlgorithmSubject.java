@@ -48,4 +48,5 @@ public interface AlgorithmSubject {
 	 * If an error happens during execution, the observers are notified
 	 */
 	public void notifyError(Exception e);
+
 }

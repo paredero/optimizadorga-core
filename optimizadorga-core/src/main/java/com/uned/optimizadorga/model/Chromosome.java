@@ -22,7 +22,7 @@ public class Chromosome {
 	}
 	
 	/**
-	 * Static factory method to create a randomy initialized chromosome
+	 * Static factory method to create a randomly initialized chromosome
 	 * @param parameters a map with the configuration for the chromosome
 	 * @return a randomly initialized chromosome
 	 */
@@ -35,13 +35,10 @@ public class Chromosome {
 			resultantGene.generateRandomValue();
 			chromosome.getGenes().add(resultantGene);
 		}
+		
 		/*
 		 * TODO Make some kind of ChromosomeCache
-		if (ChromosomeCache.containsChromosome(chromosome)) {
-			chromosome = ChromosomeCache.find(chromosome);
-		} else {
-			ChromosomeCache.put(chromosome);
-		}*/
+		*/
 		return chromosome;
 	}
 

@@ -1,18 +1,29 @@
 /**
  * 
  */
-package optimizadorga.test.algoritmo;
+package com.fjgarcia.optimizadorga.test;
 
 import static org.junit.Assert.assertEquals;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+
 import optimizadorga.test.util.TestObjectsBuilder;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.uned.optimizadorga.algorithm.Era;
 import com.uned.optimizadorga.algorithm.Generation;
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
+import com.uned.optimizadorga.model.Chromosome;
 import com.uned.optimizadorga.model.Configuration;
+import com.uned.optimizadorga.model.Gene;
+import com.uned.optimizadorga.model.GeneType;
+import com.uned.optimizadorga.model.Population;
 
 /**
  * @author fpb
@@ -36,7 +47,8 @@ public class EraTest implements EraObserver {
 	 * Test method for {@link com.uned.optimizadorga.algorithm.Era#execute()}.
 	 */
 	@Test
-	public void testEjecutar() {
+	public void testExecute() {
+		Instant start = Instant.now();
 		Era era = new Era(c);
 		era.registerObserver(this);
 		try {
@@ -44,8 +56,10 @@ public class EraTest implements EraObserver {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		assertEquals("Not enough notifications received",
+		assertEquals("No se han recibido las notificaciones necesarias",
 				c.getMaxGens(), numeroActualizaciones);
+		System.out.println(Duration.between(start, Instant.now()));
+		// PT16.489S
 	}
 
 	/**
@@ -56,5 +70,6 @@ public class EraTest implements EraObserver {
 	public void updateGeneracion(Generation resultadoParcial) {
 		numeroActualizaciones++;
 	}
+
 
 }

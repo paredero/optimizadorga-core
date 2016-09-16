@@ -3,6 +3,7 @@ package com.uned.optimizadorga.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.uned.optimizadorga.algorithm.comparators.BestFitnessComparator;
 
@@ -15,7 +16,6 @@ public class Population {
 	private List<Chromosome> chromosomes;
 	private int size;
 	private FitnessFunction fitnessFunction;
-
 	private Chromosome bestChromosome;
 	
 	/**
@@ -27,11 +27,10 @@ public class Population {
 	public static Population generateInitializedPopulation(Configuration configuration) throws Exception {
 		Population population = new Population();
 		population.setSize(configuration.getPopulationSize());
-		
 		for (int i = 0; i < configuration.getPopulationSize(); i++) {
-			population.getChromosomes().add(
-					Chromosome.generateRandomChromosome(configuration
-							.getParameters()));			
+			Chromosome chromosome = Chromosome.generateRandomChromosome(configuration
+					.getParameters());
+			population.getChromosomes().add(chromosome);			
 		}
 		population.setFitnessFunction(configuration.getFitnessFunction());
 		population.calculatePopulationFitness();
@@ -39,7 +38,7 @@ public class Population {
 	}
 
 	
-	public Population() {
+	private Population() {
 		super();
 		this.chromosomes = new ArrayList<Chromosome>();
 	}
@@ -91,9 +90,21 @@ public class Population {
 	 * @throws Exception 
 	 */
 	public void calculatePopulationFitness() throws Exception {
-		for (Chromosome individuo : this.getChromosomes()) {
-			individuo.calculateFitness(this.fitnessFunction);
-		}
+		/*this.getChromosomes().parallelStream().filter(new Predicate<Chromosome>() {
+			@Override
+			public boolean test(Chromosome t) {
+				return t.getFitness() == 0.0;
+			}
+		}).forEach(individual -> {
+			try {
+				individual.calculateFitness(this.fitnessFunction);
+			} catch (Exception e) {
+				System.out.println("Error en la evaluación del individuo " + individual);
+			}
+		});*/
+		for (Chromosome individual : this.getChromosomes()) {
+			individual.calculateFitness(this.fitnessFunction);
+		}		
 	}
 
 	/**
@@ -127,27 +138,6 @@ public class Population {
 		copy.setSize(population.getSize());
 		return copy;
 	}
-
-	/**
-	 * Copies a population, chromosomes included
-	 * @param originalPopulation
-	 * @return
-	 */
-	public static Population copyPopulation(Population originalPopulation) {
-		Population copy = new Population();
-		copy.setFitnessFunction(originalPopulation.getFitnessFunction());
-		copy.setSize(originalPopulation.getSize());
-		List<Chromosome> chromosomeList = new ArrayList<Chromosome>();
-		for (Chromosome c:originalPopulation.getChromosomes()) {
-			Chromosome newChromosome = new Chromosome(c);
-			chromosomeList.add(newChromosome);
-		}
-		copy.setChromosomes(chromosomeList);
-		return copy;
-	}
-	
-	
-
 	
 	/**
 	 * Sustituye en la poblacion un cromosoma por otro
@@ -159,9 +149,5 @@ public class Population {
 		Collections.replaceAll(this.getChromosomes(), antiguo, new Chromosome(nuevo));
 		bestChromosome = null;
 	}
-
-
-	
-
 
 }

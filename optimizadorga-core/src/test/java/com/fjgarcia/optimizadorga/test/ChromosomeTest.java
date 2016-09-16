@@ -20,50 +20,63 @@ import com.uned.optimizadorga.model.GeneType;
  *
  */
 public class ChromosomeTest {
+	Map<String, GeneType> parameterGenes;
 
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		parameterGenes = new HashMap<String, GeneType>();
+		parameterGenes.put("p1", new GeneType("p1", 0, 100, 3));
+		parameterGenes.put("p2", new GeneType("p2", 100, 200, 3));
+		parameterGenes.put("p3", new GeneType("p3", 200, 300, 3));
 	}
 
 	/**
-	 * Test method for {@link com.uned.optimizadorga.Chromosome.Cromosoma#generarAleatorio(java.util.List)}.
+	 * Test method for
+	 * {@link com.uned.optimizadorga.Chromosome.Cromosoma#generarAleatorio(java.util.List)}
+	 * .
 	 */
 	@Test
-	public void testGenerarAleatorio() {
-		Map<String, GeneType> genesParametro = new HashMap<String, GeneType>();
-		genesParametro.put("p1",new GeneType("p1",0, 100, 3));
-		genesParametro.put("p2",new GeneType("p2",100, 200, 3));
-		genesParametro.put("p3",new GeneType("p3",200, 300, 3));
-		Chromosome c = Chromosome
-				.generateRandomChromosome(genesParametro);
-		
-		assertNotNull("El cromosoma no se ha creado", c);
-		assertNotNull("La lista de genes no se ha creado", c.getGenes());	
-		assertTrue("Los genes no se han incluido dentro de la lista "
-				+ c.getGenes().size(), c.getGenes().size() == 3);
-		assertTrue("Valor Erroneo en gen p1" + c.getGenes().get(0), c
-				.getGenes().get(0).getValue() <= c
-						.getGenes().get(0).getGeneType().getMax());
-		assertTrue("Valor Erroneo en gen p1" + c.getGenes().get(0), c
-				.getGenes().get(0).getValue() >= c
-						.getGenes().get(0).getGeneType().getMin());
+	public void testGenerateRandom() {
 
-		assertTrue("Valor Erroneo en gen p2" + c.getGenes().get(1), c
-				.getGenes().get(1).getValue() <= c
-						.getGenes().get(1).getGeneType().getMax());
-		assertTrue("Valor Erroneo en gen p2" + c.getGenes().get(1), c
-				.getGenes().get(1).getValue() >= c
-						.getGenes().get(1).getGeneType().getMin());
+		long startTime = System.nanoTime();
+		int iterations = 100;
+		long[] allElapsedTimes = new long[iterations];
+		Chromosome c = null;
+		for (int i = 0; i < iterations; i++) {
+			long iterationStartTime = System.nanoTime();
+			c = Chromosome.generateRandomChromosome(parameterGenes);
+			long iterationEndTime = System.nanoTime();
+			allElapsedTimes[i] = iterationEndTime - iterationStartTime;
+			System.out.println(iterationEndTime - iterationStartTime);
 
-		assertTrue("Valor Erroneo en gen p3" + c.getGenes().get(2), c
-				.getGenes().get(2).getValue() <= c
-						.getGenes().get(2).getGeneType().getMax());
-		assertTrue("Valor Erroneo en gen p3" + c.getGenes().get(2), c
-				.getGenes().get(2).getValue() >= c
-						.getGenes().get(2).getGeneType().getMin());		
+			assertNotNull("Chromosome not created", c);
+			assertNotNull("Gene list not created", c.getGenes());
+			assertTrue("Gene list not filled with genes " + c.getGenes().size(), c.getGenes().size() == 3);
+			assertTrue("p1 gene value should be smaller than maximum" + c.getGenes().get(0),
+					c.getGenes().get(0).getValue() <= c.getGenes().get(0).getGeneType().getMax());
+			assertTrue("p1 gene value should be bigger than minimum" + c.getGenes().get(0),
+					c.getGenes().get(0).getValue() >= c.getGenes().get(0).getGeneType().getMin());
+
+			assertTrue("p2 gene value should be smaller than maximum" + c.getGenes().get(1),
+					c.getGenes().get(1).getValue() <= c.getGenes().get(1).getGeneType().getMax());
+			assertTrue("p2 gene value should be bigger than minimum" + c.getGenes().get(1),
+					c.getGenes().get(1).getValue() >= c.getGenes().get(1).getGeneType().getMin());
+
+			assertTrue("p3 gene value should be smaller than maximum" + c.getGenes().get(2),
+					c.getGenes().get(2).getValue() <= c.getGenes().get(2).getGeneType().getMax());
+			assertTrue("p3 gene value should be bigger than minimum" + c.getGenes().get(2),
+					c.getGenes().get(2).getValue() >= c.getGenes().get(2).getGeneType().getMin());
+		}
+
+		long avgTime = 0;
+		for (int i = 0; i < iterations; i++) {
+			avgTime += allElapsedTimes[i];
+		}
+		System.out.println("AvgTime: " + avgTime / (iterations));
+		System.out.println("TotalTime: " + (System.nanoTime() - startTime));
 	}
 
 }

@@ -82,7 +82,7 @@ public class RouletteSelector implements Selector {
 		double rouletteValue = Math.random();
 		// 4b. Selects the chromosome based in this random number
 		if (rouletteValue < accumulatedProbabilities[0]) {
-			selectedPopulation.getChromosomes().add(new Chromosome(initialPopulation.getChromosomes().get(0)));
+			selectedPopulation.getChromosomes().add(initialPopulation.getChromosomes().get(0));
 		} else {
 			int k = 1;
 			try {
@@ -95,7 +95,7 @@ public class RouletteSelector implements Selector {
 						k++;
 					}
 				}
-				selectedPopulation.getChromosomes().add(new Chromosome(initialPopulation.getChromosomes().get(k)));
+				selectedPopulation.getChromosomes().add(initialPopulation.getChromosomes().get(k));
 			} catch (RuntimeException e) {
 				e.printStackTrace();
 				throw e;

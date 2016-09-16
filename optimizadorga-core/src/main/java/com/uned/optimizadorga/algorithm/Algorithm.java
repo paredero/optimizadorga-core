@@ -2,11 +2,13 @@ package com.uned.optimizadorga.algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmObserver;
 import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmSubject;
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
 import com.uned.optimizadorga.model.Configuration;
+import com.uned.optimizadorga.model.Population;
 /**
  * Implementation of the evolutionary algorithm
  * It implements several interfaces
@@ -22,11 +24,11 @@ import com.uned.optimizadorga.model.Configuration;
  * @author Francisco Javier García Paredero
  *
  */
-public abstract class Algorithm implements Runnable, AlgorithmSubject, EraObserver {
+public abstract class Algorithm implements Callable, AlgorithmSubject, EraObserver {
 
 	protected Configuration configuration;
 	// Keeps the list of observers
-	private List<AlgorithmObserver> observers;
+	protected List<AlgorithmObserver> observers;
 	
 	public Algorithm(Configuration configuration) {
 		this.configuration = configuration;
@@ -37,14 +39,15 @@ public abstract class Algorithm implements Runnable, AlgorithmSubject, EraObserv
 	 * Runs the configurated number of eras
 	 */
 	@Override
-	public void run() {	
+	public Object call() throws Exception {	
 		try {
 			eraExecution();
 		} catch (Exception e) {
-			e.printStackTrace();
 			this.notifyError(e);
+			throw e;
 		}
 		this.notifyEndExecution();
+		return null;
 	}
 
 	/**
@@ -139,6 +142,4 @@ public abstract class Algorithm implements Runnable, AlgorithmSubject, EraObserv
 		// it just routes the result to the observers
 		this.notifyEndGenerationExecution(generacionProcesada);
 	}
-	
-	
 }
