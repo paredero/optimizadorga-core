@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+import com.uned.optimizadorga.algorithm.cache.ChromosomeCache;
 import com.uned.optimizadorga.algorithm.comparators.BestFitnessComparator;
 
 /**
@@ -30,7 +31,7 @@ public class Population {
 		for (int i = 0; i < configuration.getPopulationSize(); i++) {
 			Chromosome chromosome = Chromosome.generateRandomChromosome(configuration
 					.getParameters());
-			population.getChromosomes().add(chromosome);			
+			population.getChromosomes().add(chromosome);
 		}
 		population.setFitnessFunction(configuration.getFitnessFunction());
 		population.calculatePopulationFitness();
@@ -90,21 +91,9 @@ public class Population {
 	 * @throws Exception 
 	 */
 	public void calculatePopulationFitness() throws Exception {
-		/*this.getChromosomes().parallelStream().filter(new Predicate<Chromosome>() {
-			@Override
-			public boolean test(Chromosome t) {
-				return t.getFitness() == 0.0;
-			}
-		}).forEach(individual -> {
-			try {
-				individual.calculateFitness(this.fitnessFunction);
-			} catch (Exception e) {
-				System.out.println("Error en la evaluación del individuo " + individual);
-			}
-		});*/
 		for (Chromosome individual : this.getChromosomes()) {
 			individual.calculateFitness(this.fitnessFunction);
-		}		
+		}
 	}
 
 	/**

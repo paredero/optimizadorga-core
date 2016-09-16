@@ -8,7 +8,6 @@ import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmObserver;
 import com.uned.optimizadorga.algorithm.observerinterfaces.AlgorithmSubject;
 import com.uned.optimizadorga.algorithm.observerinterfaces.EraObserver;
 import com.uned.optimizadorga.model.Configuration;
-import com.uned.optimizadorga.model.Population;
 /**
  * Implementation of the evolutionary algorithm
  * It implements several interfaces
