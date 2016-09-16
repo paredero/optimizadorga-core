@@ -85,22 +85,17 @@ public class RouletteSelector implements Selector {
 			selectedPopulation.getChromosomes().add(initialPopulation.getChromosomes().get(0));
 		} else {
 			int k = 1;
-			try {
-				boolean stop = false;
-				while (!stop && k < accumulatedProbabilities.length - 1) {
-					double probab = accumulatedProbabilities[k];
-					if (rouletteValue <= probab) {
-						stop = true;
-					} else {
-						k++;
-					}
+			boolean stop = false;
+			while (!stop && k < accumulatedProbabilities.length - 1) {
+				double probab = accumulatedProbabilities[k];
+				if (rouletteValue <= probab) {
+					stop = true;
+				} else {
+					k++;
 				}
-				selectedPopulation.getChromosomes().add(initialPopulation.getChromosomes().get(k));
-			} catch (RuntimeException e) {
-				e.printStackTrace();
-				throw e;
 			}
-
+			selectedPopulation.getChromosomes().add(
+					initialPopulation.getChromosomes().get(k));
 		}
 	}
 
