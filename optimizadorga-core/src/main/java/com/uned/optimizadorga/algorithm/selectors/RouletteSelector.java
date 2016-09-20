@@ -23,15 +23,10 @@ public class RouletteSelector implements Selector {
 	@Override
 	public Population select(Population initialPopulation) {
 		Population selectedElements = Population.copyEmptyPopulation(initialPopulation);
-
 		double offset = this.calculateOffset(initialPopulation);
 		// 1.- Calculates the totalAmount of the fitness values for all the
 		// chromosomes in the population
-		double totalFitness = 0;
-		for (Chromosome c : initialPopulation.getChromosomes()) {
-			totalFitness += c.getFitness() + offset;
-		}
-
+		double totalFitness = calculateTotalFitness(initialPopulation, offset);
 		// 2 and 3. Calculates the selection probability for each chromosome and
 		// the accumulated probability
 		double[] accumulatedProbability = new double[initialPopulation.getSize()];
@@ -44,11 +39,24 @@ public class RouletteSelector implements Selector {
 			i++;
 		}
 
-		// 4. Will roll the roulette "size" times
 		for (int j = 0; j < initialPopulation.getSize(); j++) {
 			rouletteRoll(initialPopulation, selectedElements, accumulatedProbability);
 		}
 		return selectedElements;
+	}
+
+	/**
+	 * @param initialPopulation
+	 * @param offset
+	 * @return
+	 */
+	private double calculateTotalFitness(Population initialPopulation,
+			double offset) {
+		double totalFitness = 0;
+		for (Chromosome c : initialPopulation.getChromosomes()) {
+			totalFitness += c.getFitness() + offset;
+		}
+		return totalFitness;
 	}
 
 	/**

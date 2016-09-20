@@ -73,17 +73,6 @@ public class Population {
 		this.fitnessFunction = fitnessFunction;
 	}
 
-
-	public Chromosome getBestChromosome() {
-		return bestChromosome;
-	}
-
-
-	public void setBestChromosome(Chromosome bestChromosome) {
-		this.bestChromosome = bestChromosome;
-	}
-
-
 	/**
 	 * Calculates the fitness for each individual in the population
 	 * @throws Exception 
