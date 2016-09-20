@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,6 +25,7 @@ import com.uned.optimizadorga.model.Population;
 public class AlgorithmTest implements AlgorithmObserver {
 	protected Configuration config;
 	protected Algorithm a;
+	ExecutorService pool;
 	protected int notificacionesFin;
 	protected int notificacionesGeneracion;
 	protected int notificacionesEra;
@@ -32,18 +36,21 @@ public class AlgorithmTest implements AlgorithmObserver {
 		config = TestObjectsBuilder.buildConfiguration();	
 		a = new SynchronousAlgorithm(config);
 		a.registerObserver(this);
+		pool = Executors.newCachedThreadPool();
 	}
 
 	@Test
 	public void testRun() throws Exception {
-		a.call();		
+		Future result = pool.submit(a);
+		result.get();
 	}
 
 	@Test(expected=Exception.class)
 	public void testRunFail() throws Exception {
 		config.setFitnessFunction(null);
 		a = new SynchronousAlgorithm(config);
-		a.call();
+		Future result = pool.submit(a);
+		result.get();
 		fail();
 	}
 

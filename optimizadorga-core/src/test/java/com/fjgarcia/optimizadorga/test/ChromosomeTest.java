@@ -40,18 +40,10 @@ public class ChromosomeTest {
 	 */
 	@Test
 	public void testGenerateRandom() {
-
-		long startTime = System.nanoTime();
 		int iterations = 100;
-		long[] allElapsedTimes = new long[iterations];
 		Chromosome c = null;
 		for (int i = 0; i < iterations; i++) {
-			long iterationStartTime = System.nanoTime();
 			c = Chromosome.generateRandomChromosome(parameterGenes);
-			long iterationEndTime = System.nanoTime();
-			allElapsedTimes[i] = iterationEndTime - iterationStartTime;
-			System.out.println(iterationEndTime - iterationStartTime);
-
 			assertNotNull("Chromosome not created", c);
 			assertNotNull("Gene list not created", c.getGenes());
 			assertTrue("Gene list not filled with genes " + c.getGenes().size(), c.getGenes().size() == 3);
@@ -70,13 +62,6 @@ public class ChromosomeTest {
 			assertTrue("p3 gene value should be bigger than minimum" + c.getGenes().get(2),
 					c.getGenes().get(2).getValue() >= c.getGenes().get(2).getGeneType().getMin());
 		}
-
-		long avgTime = 0;
-		for (int i = 0; i < iterations; i++) {
-			avgTime += allElapsedTimes[i];
-		}
-		System.out.println("AvgTime: " + avgTime / (iterations));
-		System.out.println("TotalTime: " + (System.nanoTime() - startTime));
 	}
 
 }

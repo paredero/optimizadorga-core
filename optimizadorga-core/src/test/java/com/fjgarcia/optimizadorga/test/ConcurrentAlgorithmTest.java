@@ -1,5 +1,7 @@
 package com.fjgarcia.optimizadorga.test;
 
+import java.util.concurrent.Executors;
+
 import org.junit.Before;
 
 import com.fjgarcia.optimizadorga.test.util.TestObjectsBuilder;
@@ -13,6 +15,7 @@ public class ConcurrentAlgorithmTest extends AlgorithmTest {
 		config = TestObjectsBuilder.buildConfiguration();	
 		a = new ConcurrentAlgorithm(config);
 		a.registerObserver(this);
+		pool = Executors.newCachedThreadPool();
 	}
 
 
