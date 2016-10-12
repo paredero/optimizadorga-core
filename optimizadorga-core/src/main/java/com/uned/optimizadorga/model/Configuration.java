@@ -22,6 +22,7 @@ public class Configuration {
 	private double mutationProbability;
 	private Selector selector;
 	private boolean elitism;
+	private Boolean asynchronous;
 
 	private Configuration() {
 		super();
@@ -44,18 +45,19 @@ public class Configuration {
 	 */
 	public static Configuration createConfiguration(Integer maxEras, Integer maxGenerations, FitnessFunction fitnessFunction,
 			Map<String, GeneType> parameters, Integer populationSize, Double crossoverProbability,
-			Double mutationProbability, boolean useElitism, SelectorType selectorType) {
-		Configuration instancia = new Configuration();
-		instancia.maxEras = maxEras;
-		instancia.maxGens = maxGenerations;
-		instancia.fitnessFunction = fitnessFunction;
-		instancia.parameters = parameters;
-		instancia.populationSize = populationSize;
-		instancia.crossoverProbability = crossoverProbability;
-		instancia.mutationProbability = mutationProbability;
-		instancia.elitism = useElitism;
-		instancia.selector = SelectorFactory.getInstance(selectorType);
-		return instancia;
+			Double mutationProbability, boolean useElitism, SelectorType selectorType, Boolean asynchronous) {
+		Configuration instance = new Configuration();
+		instance.maxEras = maxEras;
+		instance.maxGens = maxGenerations;
+		instance.fitnessFunction = fitnessFunction;
+		instance.parameters = parameters;
+		instance.populationSize = populationSize;
+		instance.crossoverProbability = crossoverProbability;
+		instance.mutationProbability = mutationProbability;
+		instance.elitism = useElitism;
+		instance.selector = SelectorFactory.getInstance(selectorType);
+		instance.asynchronous = asynchronous;
+		return instance;
 	}
 
 	
@@ -136,4 +138,9 @@ public class Configuration {
 		this.elitism = elitism;
 	}
 
+	public Boolean isAsynchronous() {
+		return asynchronous;
+	}
+
+	
 }

@@ -31,7 +31,7 @@ public class GenerationTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		config = TestObjectsBuilder.buildConfiguration();
+		config = TestObjectsBuilder.buildConfiguration(Boolean.FALSE);
 		Population p = Population.generateInitializedPopulation(config);
 		g = new Generation(p, config);
 	}

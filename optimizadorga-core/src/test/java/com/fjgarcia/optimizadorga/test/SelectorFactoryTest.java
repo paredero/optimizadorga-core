@@ -1,10 +1,9 @@
 package com.fjgarcia.optimizadorga.test;
 
-import static org.junit.Assert.fail;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.uned.optimizadorga.algorithm.selectors.RouletteSelector;
 import com.uned.optimizadorga.algorithm.selectors.Selector;
 import com.uned.optimizadorga.algorithm.selectors.SelectorFactory;
 import com.uned.optimizadorga.algorithm.selectors.SelectorType;

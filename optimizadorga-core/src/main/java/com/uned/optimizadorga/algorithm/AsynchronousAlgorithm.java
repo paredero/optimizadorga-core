@@ -8,9 +8,9 @@ import java.util.concurrent.Future;
 
 import com.uned.optimizadorga.model.Configuration;
 
-public class ConcurrentAlgorithm extends Algorithm {
+public class AsynchronousAlgorithm extends Algorithm {
 
-	public ConcurrentAlgorithm(Configuration configuration) {
+	public AsynchronousAlgorithm(Configuration configuration) {
 		super(configuration);
 	}
 

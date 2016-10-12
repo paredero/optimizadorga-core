@@ -38,7 +38,7 @@ public class EraTest implements EraObserver {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		c = TestObjectsBuilder.buildConfiguration();		
+		c = TestObjectsBuilder.buildConfiguration(Boolean.FALSE);		
 	}
 
 

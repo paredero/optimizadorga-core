@@ -41,9 +41,9 @@ public class TestObjectsBuilder {
 		return new FitnessFunction(expresion, genes);
 	}
 
-	public static Configuration buildConfiguration() throws Exception {
+	public static Configuration buildConfiguration(Boolean asynchronous) throws Exception {
 		return Configuration.createConfiguration(erasToTest, generationsToTest, buildFitnessFunction(), buildGenes(),
-				populationSizeToTest, crossoverProbability, mutationProbability, testWithElitism, selectorTypeToTest);
+				populationSizeToTest, crossoverProbability, mutationProbability, testWithElitism, selectorTypeToTest, asynchronous);
 	}
 
 }

@@ -31,7 +31,7 @@ public class PopulationTest {
 	 */
 	@Test
 	public void testGenerarPoblacionInicializada() throws Exception {
-		Configuration c = TestObjectsBuilder.buildConfiguration();
+		Configuration c = TestObjectsBuilder.buildConfiguration(Boolean.FALSE);
 		for (int j=0; j<c.getMaxEras();j++) {
 			Population p = Population.generateInitializedPopulation(c);
 			for (Chromosome cr:p.getChromosomes()) {

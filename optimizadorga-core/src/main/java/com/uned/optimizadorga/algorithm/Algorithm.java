@@ -136,9 +136,20 @@ public abstract class Algorithm implements Callable, AlgorithmSubject, EraObserv
 	 * (com.uned.optimizadorga.algoritmo.Generacion)
 	 */
 	@Override
-	public void updateGeneracion(Generation generacionProcesada) {
+	public void updateGeneracion(Generation processedGeneration) {
 		// when the algoritm receives an update about the finishing of a generation
 		// it just routes the result to the observers
-		this.notifyEndGenerationExecution(generacionProcesada);
+		this.notifyEndGenerationExecution(processedGeneration);
+	}
+
+	/**
+	 * Factory method for algorithms
+	 */
+	public static Algorithm create(Configuration configuration) {
+		if (configuration.isAsynchronous()) {
+			return new AsynchronousAlgorithm(configuration);
+		} else {
+			return new SynchronousAlgorithm(configuration);
+		}
 	}
 }

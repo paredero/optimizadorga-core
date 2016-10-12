@@ -28,7 +28,7 @@ public class AsynchronousEraTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		config = TestObjectsBuilder.buildConfiguration();
+		config = TestObjectsBuilder.buildConfiguration(Boolean.TRUE);
 	}
 
 	/**

@@ -33,8 +33,8 @@ public class AlgorithmTest implements AlgorithmObserver {
 	
 	@Before
 	public void setUp() throws Exception {
-		config = TestObjectsBuilder.buildConfiguration();	
-		a = new SynchronousAlgorithm(config);
+		config = TestObjectsBuilder.buildConfiguration(Boolean.FALSE);	
+		a = Algorithm.create(config);
 		a.registerObserver(this);
 		pool = Executors.newCachedThreadPool();
 	}

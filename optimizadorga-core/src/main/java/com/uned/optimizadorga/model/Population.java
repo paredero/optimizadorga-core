@@ -37,7 +37,7 @@ public class Population {
 	}
 
 	
-	private Population() {
+	public Population() {
 		super();
 		this.chromosomes = new ArrayList<Chromosome>();
 	}
